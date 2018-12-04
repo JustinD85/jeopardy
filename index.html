@@ -5,12 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
   <title>Document</title>
+  <link rel="stylesheet" type="text/css" href="./index.css">
 </head>
-require(https)
-
-var data = get('url')
 <body>
-  <h1>Hi!</h1>
+  <button>Start</button>
+  <label for="playerOneName">Player One Name</label>
+  <input id="playerOneName"/>
+
+  <div style="background:lightgrey">
+    Category
+    <button id="clue">
+      100
+    </button>
+  </div>
+
+  <div id="prompt">
+    Prompt
+  </div>
+  <footer>
+    <span id="playerOneCard">Player1</span>, 
+    <span id="playerTwoCard">Player2</span>,
+    <span id="playerThreeCard">Player3</span>
+  </footer>
   <!--
     ** User Stories! **
 
@@ -51,6 +67,8 @@ var data = get('url')
           - Current players total score or
           - Highest point value remaining on board
    -->
+
+   <script src="./index.js"></script>
 </body>
 </html>
 
