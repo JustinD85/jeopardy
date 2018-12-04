@@ -708,6 +708,7 @@ const data = {
 };
 
 
+
 var clue = document.querySelector('#clue');
 var prompt = document.querySelector('#prompt');
 
