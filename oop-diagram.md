@@ -5,34 +5,46 @@
     * constructor()
       * round - number
       * players - array
-      * clues - array
       * board - array
+      * data - object
     * start(users - array)
     * setUpBoard()
+    * checkAnswer()
     * updatePlayerScore(clueID - number)
     * rotateCurrentPlayer()
     * determineWinner()
     * updateRound()
+    * quit()
 
   * Data - stores clue data
+  
     * constructor(return criteria)
-    * clues
+      * data - object
+      * clues - array
+      * handsBackRequest()
     
     
   * Player
   
     * constructor(name - string)
-      * name
-      * score
+      * name - string
+      * score - number
     * 
   * Board
   
     * constructor()
-      * clues
-      * populateBoard(clues - Data)
+      * DD locations
+      * populate()
+        * randomly determine 4/1 categories
+        * grab clues based on category
         * assign Daily Double location(s)
+        * check round to pop correctly
+        * assign proper values to round(s)
+        * check against duplicate clues
     * clueAnswered()
-    * checkDailyDouble()
+    * checkDailyDoubleOrFinal()
+      * has different behavior on each round
+
 
 
   * Clue
@@ -43,13 +55,12 @@
       * value - number // dollar
       * category - string
       * answered - boolean
-      * isDailyDouble - boolean
     * 
 
   * Wager - extends Clues
 
     * constructor(clue - object)
       * super(clue - object)
-      * wager
+      * wager - number
     * alterClueValue(userInput)
     * 
