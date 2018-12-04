@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+  <title>Document</title>
+</head>
+require(https)
+
+var data = get('url')
+<body>
+  <h1>Hi!</h1>
+  <!--
+    ** User Stories! **
+
+      GamePlay:
+        Three players
+        Three rounds, one turn per round(players)
+        winner = player with highest score at end of game
+        player score is displayed by name
+        players play in order, turn-based(there can be a tie)
+
+      Rounds:
+        o First round must have four categories, with five clues each,
+           and point values from 100-500
+        o One clue in the first round must be a 'Daily Double'(worth 2x points?)
+        o Second round must have four categories, with five clues each,
+            and point values ranging from 200-1,000
+          - Two clues must be 'Daily Double'
+        o Third round  must have a single category and a single clue that
+             behaves like a 'Daily Double'
+          - must only display the category
+          - allow each player to input a wager
+          - then display the clue
+
+      Player:
+        o Should be able to quit/start a new game at any time
+        o Should be able to enter my name
+        o During my turn:
+          - Should be able to input a wager if 'Daily Double' was selected
+          - Should be able to input answer after the clue is revealed
+          - Score increment/decrement based on clue point value and correctness
+
+      Clues:
+        o Each should only appear once per game
+        o 'Daily Double' must accept a wager from the player
+
+      Wager: //Hopefully we can extend clues
+        o Should range from 5 to a maximum set as the highest of the following two values:
+          - Current players total score or
+          - Highest point value remaining on board
+   -->
+</body>
+</html>
+
