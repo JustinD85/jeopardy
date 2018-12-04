@@ -1,2 +1,21 @@
 * Classes
-** Game
+
+  * Game
+  
+    *
+
+  * Round
+  
+    *
+
+  * Player
+  
+    *
+
+  * Clues
+  
+    *
+
+  * Wager
+  
+    *
