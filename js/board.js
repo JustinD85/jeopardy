@@ -6,20 +6,20 @@ export class Board{
     console.log('Got from DOM', inBoardFromDOM);
     console.log('Initial', inBoardFromDOM[0].children[0].children[0]);
     function build() {
-      let row = 1;
-      let column = 1;
-
-      while (row <= 5) {
+      
+      
+      for (let column = 1; column <= 5;column++){
+      for (let row = 1; row <= 5; row++) {
         if (row % 5 === 1) {
           //set the category
-          inBoardFromDOM[0].children[column - 1].children[row - 1].innerText = 'Category';
+          inBoardFromDOM[0].children[column - 1].children[row - 1].innerText = `Categories${column}`;
         }
         if (row % 5 !== 1) {
           //set clue
-          inBoardFromDOM[0].children[column - 1].children[row - 1].innerText = 'Clue';
+          inBoardFromDOM[0].children[column - 1].children[row - 1].innerText = `Clue${row}`;
         }
-        row++;
       }
+    }
 
     }
     build();
