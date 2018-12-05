@@ -21,7 +21,7 @@ body {
 
 .category {
   background-color: pink;
-  height: 90%;
+  height: 100%;
   border: 1px solid red;
 }
 
@@ -30,6 +30,10 @@ body {
   border: 1px solid blue;
 }
 
-.player-area{
-  background:yellow;
+.player-area {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
+  background:green;
 }
