@@ -1,4 +1,4 @@
-const data = {
+export const data = {
   response_code: {
     version: '1.5',
     termsofService: 'http://frontend.turing.io/projects/jeopardy.html',
@@ -706,40 +706,3 @@ const data = {
     }
   ]
 };
-
-
-var clue = document.querySelector('#clue');
-var prompt = document.querySelector('#prompt');
-
-clue.addEventListener('click', () => {
-
-  let tempEle = document.createElement('article');
-  let hm = Object.entries(data.categories).find((category) => {
-    const categoryId = category[1];
-    const clueId = data.clues[0].categoryId;
-
-    return categoryId === clueId;
-  })[0]
-  
-  tempEle.innerHTML = hm;
-  prompt.appendChild(tempEle);
-
-  tempEle = document.createElement('article');
-  tempEle.innerHTML = data.clues[0].question;
-  prompt.appendChild(tempEle);
-
-  tempEle = document.createElement('label');
-  tempEle.htmlFor = 'answer';
-  prompt.appendChild(tempEle);
-
-  tempEle = document.createElement('input');
-  tempEle.id = 'answer';
-  prompt.appendChild(tempEle);
-
-  tempEle = document.createElement('button');
-  tempEle.id = 'submit';
-  tempEle.innerText = 'Submit'
-  prompt.appendChild(tempEle);
-
-
-})
