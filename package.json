@@ -1,0 +1,24 @@
+{
+  "name": "jeopardy",
+  "version": "1.0.0",
+  "description": "Jeopardy Game ",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JustinD85/jeopardy.git"
+  },
+  "author": "Justin and Travis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JustinD85/jeopardy/issues"
+  },
+  "homepage": "https://github.com/JustinD85/jeopardy#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^5.9.0",
+    "mocha": "^5.2.0"
+  }
+}
