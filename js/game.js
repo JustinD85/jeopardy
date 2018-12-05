@@ -13,7 +13,7 @@ export class Game{
 
   start(users) {
     console.log('Game Started!');
-    this.players = users;
+    
   }
 
   setUpBoard(inDOMBoard) {
