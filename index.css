@@ -1,3 +1,31 @@
-footer{
-  float: right;
+/*ENTIRE PAGE - DEFAULTS*/
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100vh;
+}
+
+/*CLUE BOXES*/
+.game-board {
+  height: 85%;
+  min-height: 500px;
+  border: 1px solid green;
+  background-color: lightgrey;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.category {
+  background-color: pink;
+  height: 90%;
+  border: 1px solid red;
+}
+
+.clue {
+  height: 20%;
+  border: 1px solid blue;
 }

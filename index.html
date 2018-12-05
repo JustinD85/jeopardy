@@ -8,67 +8,44 @@
   <link rel="stylesheet" type="text/css" href="./index.css">
 </head>
 <body>
-  <button>Start</button>
-  <label for="playerOneName">Player One Name</label>
-  <input id="playerOneName"/>
-
-  <div style="background:lightgrey">
-    Category
-    <button id="clue">
-      100
-    </button>
-  </div>
-
-  <div id="prompt">
-    Prompt
-  </div>
-  <footer>
-    <span id="playerOneCard">Player1</span>, 
-    <span id="playerTwoCard">Player2</span>,
-    <span id="playerThreeCard">Player3</span>
-  </footer>
-  <!--
-    ** User Stories! **
-
-      GamePlay:
-        Three players
-        Three rounds, one turn per round(players)
-        winner = player with highest score at end of game
-        player score is displayed by name
-        players play in order, turn-based(there can be a tie)
-
-      Rounds:
-        o First round must have four categories, with five clues each,
-           and point values from 100-500
-        o One clue in the first round must be a 'Daily Double'(worth 2x points?)
-        o Second round must have four categories, with five clues each,
-            and point values ranging from 200-1,000
-          - Two clues must be 'Daily Double'
-        o Third round  must have a single category and a single clue that
-             behaves like a 'Daily Double'
-          - must only display the category
-          - allow each player to input a wager
-          - then display the clue
-
-      Player:
-        o Should be able to quit/start a new game at any time
-        o Should be able to enter my name
-        o During my turn:
-          - Should be able to input a wager if 'Daily Double' was selected
-          - Should be able to input answer after the clue is revealed
-          - Score increment/decrement based on clue point value and correctness
-
-      Clues:
-        o Each should only appear once per game
-        o 'Daily Double' must accept a wager from the player
-
-      Wager: //Hopefully we can extend clues
-        o Should range from 5 to a maximum set as the highest of the following two values:
-          - Current players total score or
-          - Highest point value remaining on board
-   -->
-
-   <script src="./index.js"></script>
+  <main class="game-board">
+    <section class="category">
+      <article class="clue" id="00"></article>
+      <article class="clue" id="01"></article>
+      <article class="clue" id="02"></article>
+      <article class="clue" id="03"></article>
+      <article class="clue" id="04"></article>
+    </section>
+    <section class="category">
+      <article class="clue" id="10"></article>
+      <article class="clue" id="11"></article>
+      <article class="clue" id="12"></article>
+      <article class="clue" id="13"></article>
+      <article class="clue" id="14"></article>
+    </section>
+    <section class="category">
+      <article class="clue" id="20"></article>
+      <article class="clue" id="21"></article>
+      <article class="clue" id="22"></article>
+      <article class="clue" id="23"></article>
+      <article class="clue" id="24"></article>
+    </section>
+    <section class="category">
+      <article class="clue" id="30"></article>
+      <article class="clue" id="31"></article>
+      <article class="clue" id="32"></article>
+      <article class="clue" id="33"></article>
+      <article class="clue" id="34"></article>
+    </section>
+    <section class="category">
+      <article class="clue" id="40"></article>
+      <article class="clue" id="41"></article>
+      <article class="clue" id="42"></article>
+      <article class="clue" id="43"></article>
+      <article class="clue" id="44"></article>
+    </section>
+  </main>
+  <script src="./index.js"></script>
 </body>
 </html>
 
