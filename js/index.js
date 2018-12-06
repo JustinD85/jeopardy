@@ -21,13 +21,8 @@ get('#start-btn').addEventListener('click', function () {
   get('#view').innerHTML = '<img src="./img/loading.gif">';
 
   window.setTimeout(() => {
-    get('#view').innerHTML = '<h1>Javascript Game</h1>';
-    game = new Game();
-    //game loads
-    game.start([playerOneName, playerTwoName, playerThreeName]);
-      //load new view
-    game.render();
-  }, 1500)
+    game = new Game([playerOneName, playerTwoName, playerThreeName]);
+  }, 500)
 
  
 
@@ -40,6 +35,9 @@ get('#start-btn').addEventListener('click', function () {
   // get('#p3-name-input').value = '';
   
 });
+
+//EVENT BASED GAME!!, events activate when we click something!
+
 //  DELETE LATER ... USING FOR CONVIENENCE
 get('#start-btn').click();
 
