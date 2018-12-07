@@ -26,7 +26,7 @@ export class DataManager{
           acc[counter].question = question;
           acc[counter].answer = answer;
           acc[counter].value = pointValue;
-          acc[counter].category = currentCategory;//categories are camelcase
+          acc[counter].category = this.parseTitle(currentCategory);//categories are camelcase
          
           counter++
         }
@@ -34,5 +34,26 @@ export class DataManager{
        return acc;
        }, { })
       }
+
+    parseTitle(str) {
+
+      var strToArray = str.split('');
+      var capitalIndexes = [];
       
+      strToArray.forEach((char) => {
+          if (char === char.toUpperCase()) {
+              capitalIndexes.push(strToArray.indexOf(char));
+          }
+      });
+
+      capitalIndexes.forEach((capital, i) => {
+          let notCapitalWord = (capitalIndexes.indexOf(capital-1) === -1);
+          if (notCapitalWord) strToArray.splice(capital + i, 0, ' ');
+          i++;
+      });
+
+      strToArray[0] = strToArray[0].toUpperCase();
+      
+      return strToArray.join('');
+  }
 }
