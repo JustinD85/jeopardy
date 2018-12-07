@@ -1,3 +1,3 @@
-export class Wager{
+export class Wager {
   
 }
