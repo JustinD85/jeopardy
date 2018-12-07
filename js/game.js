@@ -3,15 +3,17 @@ import { Board } from './board.js';
 import { Clue } from './clue.js';
 import { Wager } from './wager.js';
 import { get, getAll, createEl } from './util/utilities.js';
+import { Player } from './player.js';
 
 export class Game {
   constructor(inPlayers) {
     this.round = 0;
-    this.players = inPlayers;
+    this.players = inPlayers.map((name) => new Player(name));
     this.board = new Board();
     this.data = new DataManager();
 
     this.render();
+
     
   }
 
@@ -48,8 +50,22 @@ export class Game {
 
       get('.game-board').append(column);
     }
+    
+    let playerList = createEl('section');
+    playerList.classList.add('player-area');
 
-    console.log(get('#view'));
+    this.players.forEach((player, i) => {
+      let user = createEl('article');
+      let {name, score} = player;
+
+      user.classList.add(`player-${i}`)
+      user.innerText = `${name} score: ${score}`;
+      playerList.append(user);
+    });
+
+    get('#view').append(playerList)
+    
+    // console.log(get('#view'));
   }
 
   setUpBoard(inDOMBoard) {
@@ -61,6 +77,7 @@ export class Game {
   }
 
   updatePlayerScore(clueId) {
+    this.players[0].score += this.data[clueId].value;
 
   }
 
