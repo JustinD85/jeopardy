@@ -1,41 +1,86 @@
 import { Game } from './game.js';
 import { Player } from './player.js';
-import {get, getAll} from './util/utilities.js'
+import {get, getAll, createEl} from './util/utilities.js'
 
-
-//Notionally from DOM
-let playerOneName = 'Travis';
-let playerTwoName = 'TRobot';
-let playerThreeName = 'TJustins';
-const boardFromDOM = document.querySelectorAll('.game-board');
 let game;
+const boardFromDOM = document.querySelectorAll('.game-board');
+const domMethods = {
+  render
+}
 
-//create users array
-get('#start-btn').addEventListener('click', () => {
-  // playerOneName = get('#p1-name-input').value;
-  // playerTwoName = get('#p2-name-input').value;
-  // playerThreeName = get('#p3-name-input').value;
+get('#start-btn').addEventListener('click',transitionToGame );
+get('#view').addEventListener('click', render);
 
-  //set screen transition
-    //add transition img
-  get('#view').innerHTML = '<img src="./img/loading.gif">';
 
-  window.setTimeout(() => {
-    game = new Game([playerOneName, playerTwoName, playerThreeName]);
-  }, 500) 
-});
-
-get('#view').addEventListener('click', () => {
+function render(event) {
+  // console.log(event.target.id);
+  // switch (event.target.id) {
+  //   case 'start-btn': console.log('yup');
+  // }
   let target = event.target.dataset.id;
   if (target) {
-    game.updatePlayerScore(target)
-    game.render();
+    game.updatePlayerScore(target);
+    createBoard();
+    createPlayerArea();
   }
-});
+}
 
-//EVENT BASED GAME!!, events activate when we click something!
 
-//  DELETE LATER ... USING FOR CONVIENENCE
-get('#start-btn').click();
 
-// game.setUpBoard(boardFromDOM);
+function createBoard() {
+  let tempGameBoard = createEl('main');
+
+  get('#view').innerHTML = '';
+  tempGameBoard.classList.add('game-board');
+  get('#view').append(tempGameBoard);
+  
+  for (let i = 0, id = 0; i < 5; i++) {
+    let column = createEl('section');
+    column.classList.add('category');
+  
+    for (let j = 0; j < 5; j++) {
+      let row = createEl('article');
+  
+      if (j === 0) {
+        row.classList.add('clue');
+        row.innerHTML = `<h1>${game.data[id].category}</h1>`;
+      } else {
+        row.classList.add('clue');
+        row.dataset.id = `${id}`;
+        row.innerHTML = `<h1> ${game.data[id].value}</h1>`;
+        id++;
+      }
+      column.append(row);
+    }
+    get('.game-board').append(column);
+  }
+}
+
+function createPlayerArea() {
+  let playerList = createEl('section');
+  playerList.classList.add('player-area');
+  
+  game.players.forEach((player, i) => {
+    let user = createEl('article');
+    let { name, score } = player;
+    user.classList.add(`player-${i}`);
+    user.innerText = `${name} score: ${score}`;
+    playerList.append(user);
+  });
+  get('#view').append(playerList);
+}
+
+function transitionToGame(){
+  const playerOneName = get('#p1-name-input').value;
+  const playerTwoName = get('#p2-name-input').value;
+  const playerThreeName = get('#p3-name-input').value;
+
+// transition img below
+get('#view').innerHTML = '<img src="./img/loading.gif">';
+
+// timeout is to display the transition screen
+window.setTimeout(() => {
+  game = new Game([playerOneName, playerTwoName, playerThreeName]);
+  render();
+}, 500);   
+}
