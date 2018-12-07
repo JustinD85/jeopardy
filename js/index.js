@@ -70,17 +70,17 @@ function createPlayerArea() {
   get('#view').append(playerList);
 }
 
-function transitionToGame(){
+function transitionToGame() {
   const playerOneName = get('#p1-name-input').value;
   const playerTwoName = get('#p2-name-input').value;
   const playerThreeName = get('#p3-name-input').value;
 
-// transition img below
-get('#view').innerHTML = '<img src="./img/loading.gif">';
+  // transition img below
+  get('#view').innerHTML = '<img src="./img/loading.gif">';
 
-// timeout is to display the transition screen
-window.setTimeout(() => {
-  game = new Game([playerOneName, playerTwoName, playerThreeName]);
-  render();
-}, 500);   
+  // timeout is to display the transition screen
+  window.setTimeout(() => {
+    game = new Game([playerOneName, playerTwoName, playerThreeName]);
+    render();
+  }, 500);   
 }

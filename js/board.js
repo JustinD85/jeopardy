@@ -1,8 +1,8 @@
-export class Board{
-  constructor(){
+export class Board {
+  constructor() {
     this.dailyDoubleLocations = [];
   }
-  populate(inData) {
-  
+  populate() {
+    
   }
 }

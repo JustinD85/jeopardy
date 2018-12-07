@@ -1,3 +1,3 @@
-export class Clue{
+export class Clue {
 
 }
