@@ -13,8 +13,6 @@ export class Game {
     this.data = new DataManager();
 
     this.render();
-
-    
   }
 
   start() {
@@ -65,7 +63,10 @@ export class Game {
 
     get('#view').append(playerList)
     
-    // console.log(get('#view'));
+    const quitButton = createEl('button');
+    quitButton.innerText = 'Quit';
+    quitButton.id = 'quit';
+    get('#view').append(quitButton);
   }
 
   setUpBoard(inDOMBoard) {

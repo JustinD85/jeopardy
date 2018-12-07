@@ -31,11 +31,15 @@ get('#view').addEventListener('click', () => {
     game.updatePlayerScore(target)
     game.render();
   }
+  let button = event.target.id;
+  if (button === 'quit') {
+    location.reload();
+  }
 });
 
 //EVENT BASED GAME!!, events activate when we click something!
 
 //  DELETE LATER ... USING FOR CONVIENENCE
-get('#start-btn').click();
+// get('#start-btn').click();
 
 // game.setUpBoard(boardFromDOM);
