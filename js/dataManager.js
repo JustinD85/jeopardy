@@ -38,17 +38,17 @@ export class DataManager{
     parseTitle(str) {
 
       var strToArray = str.split('');
-      var foundCapitals = [];
+      var capitalIndexes = [];
       
       strToArray.forEach((char) => {
           if (char === char.toUpperCase()) {
-              foundCapitals.push(strToArray.indexOf(char));
+              capitalIndexes.push(strToArray.indexOf(char));
           }
       });
 
-      foundCapitals.forEach((capital, i) => {
-          let notMeantToBeCaps = (foundCapitals.indexOf(capital-1) === -1);
-          if (notMeantToBeCaps) strToArray.splice(capital + i, 0, ' ');
+      capitalIndexes.forEach((capital, i) => {
+          let notCapitalWord = (capitalIndexes.indexOf(capital-1) === -1);
+          if (notCapitalWord) strToArray.splice(capital + i, 0, ' ');
           i++;
       });
 
