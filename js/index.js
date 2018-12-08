@@ -3,25 +3,18 @@ import { Player } from './player.js';
 import {get, getAll, createEl} from './util/utilities.js'
 
 let game;
-const boardFromDOM = document.querySelectorAll('.game-board');
 const domMethods = {
   render
 }
 
-get('#start-btn').addEventListener('click',transitionToGame );
-get('#view').addEventListener('click', render);
-
+get('#start-btn').addEventListener('click', transitionToGame );
+// get('#game-board').addEventListener('click', render);
 
 function render(event) {
-  // console.log(event.target.id);
-  // switch (event.target.id) {
-  //   case 'start-btn': console.log('yup');
-  // }
-  let target = event.target.dataset.id;
-  if (target) {
-    game.updatePlayerScore(target);
-    createBoard();
-    createPlayerArea();
+  if (event.target.closest('.clue').dataset.id) {
+    
+    console.log('start game')
+    
   }
 }
 
@@ -30,8 +23,7 @@ function render(event) {
 function createBoard() {
   let tempGameBoard = createEl('main');
 
-  get('#view').innerHTML = '';
-  tempGameBoard.classList.add('game-board');
+  tempGameBoard.id = 'game-board';
   get('#view').append(tempGameBoard);
   
   for (let i = 0, id = 0; i < 5; i++) {
@@ -52,7 +44,9 @@ function createBoard() {
       }
       column.append(row);
     }
-    get('.game-board').append(column);
+    
+    get('#game-board').append(column);
+    get('#game-board').addEventListener('click', render);
   }
 }
 
@@ -70,6 +64,18 @@ function createPlayerArea() {
   get('#view').append(playerList);
 }
 
+function createQuitButton() { 
+  let quitBtn = createEl('article');
+  quitBtn.id = 'quit';
+  quitBtn.innerText = 'QUIT';
+  get('#view').append(quitBtn);
+  get('#quit').addEventListener('click', resetGame);
+}
+
+function resetGame() {
+  location.reload();
+}
+
 function transitionToGame() {
   const playerOneName = get('#p1-name-input').value;
   const playerTwoName = get('#p2-name-input').value;
@@ -81,6 +87,9 @@ function transitionToGame() {
   // timeout is to display the transition screen
   window.setTimeout(() => {
     game = new Game([playerOneName, playerTwoName, playerThreeName]);
-    render();
+    get('#view').innerHTML = '';
+    createPlayerArea();
+    createBoard();
+    createQuitButton();
   }, 500);   
 }
