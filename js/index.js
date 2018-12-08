@@ -4,7 +4,14 @@ import {get, getAll, createEl} from './util/utilities.js'
 
 let game;
 const domMethods = {
-  render
+  render,
+  selectClue,
+  createBoard,
+  createPlayerArea,
+  createQuitButton,
+  resetGame,
+  clearScreen,
+  transitionToGame
 }
 
 get('#start-btn').addEventListener('click', transitionToGame );
@@ -22,8 +29,9 @@ function render(event) {
 
   if (target.closest('.answerContainer')) {
     let clueId = target.closest('.clue').dataset.id;
-    let answer = game.checkAnswer(clueId, target.innerText);
-    console.log(answer)
+
+    game.update(clueId, target.innerText)
+
     //update score
 
 
@@ -66,7 +74,6 @@ function selectClue(clueId) {
   continueBtn.innerText = 'Continue';
   clue.append(continueBtn);
 }
-
 
 function createBoard() {
   let tempGameBoard = createEl('main');
@@ -123,9 +130,11 @@ function createQuitButton() {
 function resetGame() {
   location.reload();
 }
+
 function clearScreen() {
   get('#view').innerHTML = '';
 }
+
 function transitionToGame() {
   const playerOneName = get('#p1-name-input').value;
   const playerTwoName = get('#p2-name-input').value;
