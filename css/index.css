@@ -12,7 +12,7 @@ body {
 
 
 /*CLUE BOXES*/
-.game-board {
+#game-board {
   height: 85%;
   min-height: 500px;
   border: 1px solid green;
