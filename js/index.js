@@ -12,12 +12,32 @@ get('#start-btn').addEventListener('click', transitionToGame );
 
 function render(event) {
   if (event.target.closest('.clue').dataset.id) {
-    
+    let clueId = event.target.dataset.id;
+    selectClue(clueId);
     console.log('start game')
     
   }
 }
 
+function selectClue(clueId) {
+  let clue = get(`.clue[data-id="${clueId}"]`);
+  let tempEl;
+  let question = game.data[clueId].question;
+
+  get(`.clue[data-id="${clueId}"]`).innerHTML = question;
+  tempEl = createEl('input')
+  clue.append(tempEl);
+
+  tempEl= createEl('button');
+  tempEl.innerText = 'Submit';
+  clue.append(tempEl);
+
+  tempEl = createEl('button');
+  tempEl.innerText = 'Continue';
+  clue.append(tempEl);
+  
+
+}
 
 
 function createBoard() {
@@ -75,7 +95,9 @@ function createQuitButton() {
 function resetGame() {
   location.reload();
 }
-
+function clearScreen() {
+  get('#view').innerHTML = '';
+}
 function transitionToGame() {
   const playerOneName = get('#p1-name-input').value;
   const playerTwoName = get('#p2-name-input').value;
@@ -87,7 +109,7 @@ function transitionToGame() {
   // timeout is to display the transition screen
   window.setTimeout(() => {
     game = new Game([playerOneName, playerTwoName, playerThreeName]);
-    get('#view').innerHTML = '';
+    clearScreen();
     createPlayerArea();
     createBoard();
     createQuitButton();
