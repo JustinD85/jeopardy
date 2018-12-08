@@ -17,8 +17,12 @@ export class Game {
 
   }
 
-  checkAnswer() {
-
+  checkAnswer(clueId, playerGuess) {
+    if (playerGuess === this.data[clueId].answer) {
+      return 'correct';
+    } else {
+      return 'incorrect';
+    }
   }
   
   updatePlayerScore(clueId) {
