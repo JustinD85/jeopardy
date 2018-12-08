@@ -11,32 +11,60 @@ get('#start-btn').addEventListener('click', transitionToGame );
 // get('#game-board').addEventListener('click', render);
 
 function render(event) {
-  if (event.target.closest('.clue').dataset.id) {
-    let clueId = event.target.dataset.id;
-    selectClue(clueId);
-    console.log('start game')
-    
+  let target = event.target;
+
+  if (target.closest('.clue') && target.closest('.clue').dataset.id) {
+    if (target.dataset.id) {
+      let clueId = target.dataset.id;
+      selectClue(clueId);
+    }
+  }
+
+  if (target.closest('.answerContainer')) {
+    let clueId = target.closest('.clue').dataset.id;
+    let answer = game.checkAnswer(clueId, target.innerText);
+    console.log(answer)
+    //update score
+
+
   }
 }
 
 function selectClue(clueId) {
   let clue = get(`.clue[data-id="${clueId}"]`);
-  let tempEl;
-  let question = game.data[clueId].question;
+  let answerContainer;
+  let answerElement;
+  let continueBtn;
+  let answer = game.data[clueId].answer;
+  let cat = game.data[clueId].category;
 
-  get(`.clue[data-id="${clueId}"]`).innerHTML = question;
-  tempEl = createEl('input')
-  clue.append(tempEl);
+  // let question = game.data[clueId].question;
 
-  tempEl= createEl('button');
-  tempEl.innerText = 'Submit';
-  clue.append(tempEl);
-
-  tempEl = createEl('button');
-  tempEl.innerText = 'Continue';
-  clue.append(tempEl);
+  // get(`.clue[data-id="${clueId}"]`).innerHTML = question;
+  answerContainer = createEl('div')
+  answerContainer.classList.add('answerContainer');
   
+  answerElement = createEl('div');
+  answerElement.innerText = answer;
+  answerContainer.append(answerElement);
 
+  answerElement = createEl('div')
+  answerElement.innerText = 'yo';
+  answerContainer.append(answerElement);
+  
+  answerElement = createEl('div')
+  answerElement.innerText = 'sup';
+  answerContainer.append(answerElement);
+  
+  answerElement = createEl('div')
+  answerElement.innerText = 'foo';
+  answerContainer.append(answerElement);
+
+  clue.append(answerContainer);
+
+  continueBtn = createEl('button');
+  continueBtn.innerText = 'Continue';
+  clue.append(continueBtn);
 }
 
 
