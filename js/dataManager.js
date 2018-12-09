@@ -1,4 +1,6 @@
 import { data as turingData } from './data.js';
+import { Clue } from './clue.js';
+import { Wager } from './wager.js';
 
 export class DataManager {
   constructor() {
@@ -17,21 +19,21 @@ export class DataManager {
 
     return this.data.clues.reduce((acc, clue) => {
       let currentID = clue.categoryId;
+      let dailyDouble = 0;
 
       if (clueId < 20 && storedData[currentID] < limit) {
         let key = Object.values(this.data.categories).indexOf(currentID);
         let currentCategory = Object.keys(this.data.categories)[key];
         let { question, answer, pointValue } = clue;
+        let category = this.parseTitle(currentCategory);
 
         storedData[currentID] = ++storedData[currentID];
 
-        acc[clueId] = {};
-        acc[clueId].question = question;
-        acc[clueId].answer = answer;
-        acc[clueId].available = true;
-        acc[clueId].value = pointValue;
-        acc[clueId].category = this.parseTitle(currentCategory);
-
+        if (clueId === dailyDouble) {
+          acc[clueId] = new Wager(question, answer, pointValue, category, true);
+        } else {
+          acc[clueId] = new Clue(question, answer, pointValue, category);
+        }
         clueId++
       }
 
