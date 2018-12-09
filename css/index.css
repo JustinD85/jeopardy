@@ -32,6 +32,16 @@ body {
   border: 1px solid blue;
 }
 
+.wager section {
+  display: flex;
+  justify-content: space-around;
+  margin: 2px;
+}
+
+.number{
+  background: lightgoldenrodyellow;
+}
+
 .player-area {
   display: inline-block;
   width: 100%;
