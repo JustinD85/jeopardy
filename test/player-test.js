@@ -1,23 +1,22 @@
-// const chai = require('chai');
-// const expect = chai.expect;
-// const Player = require('../js/Player.js');
+const chai = require('chai');
+const expect = chai.expect;
+const Player = require('../js/Player.js');
 
-// describe('Make a player', function () {
-  
-//   // beforeEach(function () {
-//   //   player = new Player();
-//   // });
+describe('Make a player', function () {
+  let player;
 
-//   it('Should be able to make a new player', function() {
-//     let player = new Player('Pam');
+  beforeEach(function () {
+    
+    player = new Player('Pam');
+  });
 
-//     expect(player.name).to.equal('Pam');
-//   });
+  it('Should be able to make a new player', function() {
 
-//   it('Should start with a score of zero', function () {
-//     let player = new Player('Pam');
+    expect(player.name).to.equal('Pam');
+  });
 
-//     expect(player.score).to.equal(0);
-//   });
+  it('Should start with a score of zero', function () {
 
-// });
+    expect(player.score).to.equal(0);
+  });
+});
