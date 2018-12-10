@@ -1,4 +1,4 @@
-const  Clue  = require('./clue.js');
+// const  Clue  = require('./clue.js');
 class Wager extends Clue {
   constructor(question, answer, pointValue, category, isDailyDouble) {
     super(question, answer, pointValue, category);
@@ -10,5 +10,6 @@ class Wager extends Clue {
   }
 
 }
-
-module.exports = Wager;
+if (typeof module !== 'undefined') {
+  module.exports = Wager;
+}

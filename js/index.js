@@ -1,23 +1,24 @@
-const Game= require('./game.js');
-const Player = require('./player.js');
-const { get, getAll, createEl } = require('./util/utilities.js');
+// const Game = require('./game.js');
+// const Player = require('./player.js');
+// const { get, getAll, createEl } = require('./util/utilities.js');
 
 let game;
 const domMethods = {
   render,
   showAnswers,
-  createBoard,
+  updateBoard,
   createPlayerArea,
   createQuitButton,
   resetGame,
   clearScreen,
   transitionToGame
 }
+
 /*
   NEED TO USE GAME.UPDATE ONLY TO UPDATE GAME
 */
 console.error('NEED TO USE GAME.UPDATE ONLY TO UPDATE GAME')
-get('#start-btn').addEventListener('click', transitionToGame );
+get('#start-btn').addEventListener('click', transitionToGame);
 // get('#game-board').addEventListener('click', render);
 
 function render(event) {
@@ -27,17 +28,14 @@ function render(event) {
 
     if (target.dataset.id) {
       let clueId = target.dataset.id;
-      
+
       if (game.data[clueId].isDailyDouble) {
         showWager(clueId);
-        
+
       } else {
         showAnswers(clueId);
       }
     }
-
-
-
   }
 
   if (target.closest('.answerContainer')) {
@@ -46,7 +44,7 @@ function render(event) {
     game.update(clueId, target.innerText);
     clearPlayerArea();
     updatePlayers(playerArea);
-    
+
   }
 }
 
@@ -135,9 +133,9 @@ function showWager(clueId) {
 
 
 
-  
-  
-  
+
+
+
   clueContainer.innerHTML = '';
   clueContainer.append(wagerContainer);
   get('#wager-amount').addEventListener('click', () => {
@@ -152,10 +150,10 @@ function showWager(clueId) {
       const newAmount = submitAmount + selectedAmt;
       get('#wager-amount').innerText = newAmount;
       game.data[clueId].value = newAmount;
-    }) 
+    })
   })
-    
-    
+
+
 }
 
 function showAnswers(clueId) {
@@ -169,13 +167,13 @@ function showAnswers(clueId) {
   // let cat = game.data[clueId].category;
 
 
-  
+
   // let question = game.data[clueId].question;
 
   // get(`.clue[data-id="${clueId}"]`).innerHTML = question;
   answerContainer = createEl('div')
   answerContainer.classList.add('answerContainer');
-  
+
   answerElement = createEl('div');
   answerElement.innerText = answer;
   answerContainer.append(answerElement);
@@ -183,11 +181,11 @@ function showAnswers(clueId) {
   answerElement = createEl('div')
   answerElement.innerText = 'yo';
   answerContainer.append(answerElement);
-  
+
   answerElement = createEl('div')
   answerElement.innerText = 'sup';
   answerContainer.append(answerElement);
-  
+
   answerElement = createEl('div')
   answerElement.innerText = 'foo';
   answerContainer.append(answerElement);
@@ -199,34 +197,13 @@ function showAnswers(clueId) {
   clue.append(continueBtn);
 }
 
-function createBoard() {
-  let tempGameBoard = createEl('main');
+//update
+function updateBoard() {
+  let updateBoard = game.board.createBoard();
+  if (get('#game-board')) get('#game-board').remove();
 
-  tempGameBoard.id = 'game-board';
-  get('#view').append(tempGameBoard);
-  
-  for (let i = 0, id = 0; i < 5; i++) {
-    let column = createEl('section');
-    column.classList.add('category');
-  
-    for (let j = 0; j < 5; j++) {
-      let row = createEl('article');
-  
-      if (j === 0) {
-        row.classList.add('clue');
-        row.innerHTML = `<h1>${game.data[id].category}</h1>`;
-      } else {
-        row.classList.add('clue');
-        row.dataset.id = `${id}`;
-        row.innerHTML = `<h1> ${game.data[id].value}</h1>`;
-        id++;
-      }
-      column.append(row);
-    }
-    
-    get('#game-board').append(column);
-    get('#game-board').addEventListener('click', render);
-  }
+  get('#view').append(updateBoard);
+  get('#game-board').addEventListener('click', render);
 }
 
 function createPlayerArea() {
@@ -237,7 +214,7 @@ function createPlayerArea() {
 }
 
 function updatePlayers(playerArea) {
-  
+
   game.players.forEach((player, i) => {
     let user = createEl('article');
     let { name, score } = player;
@@ -250,7 +227,7 @@ function clearPlayerArea() {
   get('#player-area').innerHTML = '';
 }
 
-function createQuitButton() { 
+function createQuitButton() {
   let quitBtn = createEl('article');
   quitBtn.id = 'quit';
   quitBtn.innerText = 'QUIT';
@@ -266,7 +243,7 @@ function clearScreen() {
   get('#view').innerHTML = '';
 }
 function showGame() {
-  
+
 }
 function showPlayerScores() {
   const playerOneName = get('#p1-name-input').value;
@@ -287,9 +264,11 @@ function transitionToGame() {
     game = new Game([playerOneName, playerTwoName, playerThreeName]);
     clearScreen();
     createPlayerArea();
-    createBoard();
+    updateBoard();
     createQuitButton();
-  }, 500);   
+  }, 500);
 }
 
-// module.exports = Index;
+// if (typeof module !== 'undefined') {
+  // module.exports = Index;
+// }

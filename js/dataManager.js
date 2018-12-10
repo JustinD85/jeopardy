@@ -1,10 +1,10 @@
-const  turingData = require( './data.js');
-const Clue = require( './clue.js');
-const  Wager  =require('./wager.js');
+// const  turingData = require( './data.js');
+// const Clue = require( './clue.js');
+// const  Wager  =require('./wager.js');
 
 class DataManager {
   constructor() {
-    this.data = turingData;
+    this.data = data;
     return this.formatData();
   }
 
@@ -64,5 +64,6 @@ class DataManager {
     return strToArray.join('');
   }
 }
-
-module.exports = DataManager;
+if (typeof module !== 'undefined') {
+  module.exports = DataManager;
+}

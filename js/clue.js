@@ -8,5 +8,6 @@ class Clue {
   }
   
 }
-
-module.exports = Clue;
+if (typeof module !== 'undefined') {
+  module.exports = Clue;
+}

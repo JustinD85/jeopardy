@@ -9,5 +9,6 @@ function getAll(Element) {
 function createEl(element) {
   return document.createElement(element);
 }
-
-module.exports = { get, getAll, createEl };
+if (typeof module !== 'undefined') {
+  module.exports = { get, getAll, createEl };
+}

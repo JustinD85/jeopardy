@@ -1,9 +1,9 @@
-const  DataManager  = require('./dataManager.js');
-const  Board  = require('./board.js');
-const  Clue  = require('./clue.js');
-const  Wager  = require('./wager.js');
-const { get, getAll, createEl } = require('./util/utilities.js');
-const Player  = require('./player.js');
+// const  DataManager  = require('./dataManager.js');
+// const  Board  = require('./board.js');
+// const  Clue  = require('./clue.js');
+// const  Wager  = require('./wager.js');
+// const { get, getAll, createEl } = require('./util/utilities.js');
+// const Player  = require('./player.js');
 
 class Game {
   constructor(inPlayers) {
@@ -49,17 +49,26 @@ class Game {
 
   updateRound() {
     let bool = false;
-    
-    for (let i = 0; i < 20; i++) {
-      if (!bool) {
-        bool = this.data[i].available;
+    if (this.round < 2) {
+      for (let i = 0; i < 20; i++) {
+        if (!bool) {
+          bool = this.data[i].available;
+        }
       }
-    }
 
-    if (!bool) {
-      this.round++;
+      if (!bool) {
+        console.error("Next Round");
+        this.round++;
+        updateBoard();
+      } 
+    }else {
+      console.error('final round')
+      updateBoard();
     }
   }
+
 }
 
-module.exports = Game;
+if (typeof module !== 'undefined') {
+  module.exports = Game;
+}
