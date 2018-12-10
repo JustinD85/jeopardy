@@ -65,3 +65,5 @@ export class DataManager {
     return strToArray.join('');
   }
 }
+
+// module.exports = DataManager;

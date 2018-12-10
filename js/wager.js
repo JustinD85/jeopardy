@@ -11,3 +11,5 @@ export class Wager extends Clue {
   }
 
 }
+
+// module.exports = Wager;

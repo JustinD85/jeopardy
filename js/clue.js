@@ -8,3 +8,5 @@ export class Clue {
   }
   
 }
+
+// module.exports = Clue;

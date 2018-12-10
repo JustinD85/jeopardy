@@ -61,3 +61,5 @@ export class Game {
     }
   }
 }
+
+module.exports = Game;

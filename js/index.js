@@ -291,3 +291,5 @@ function transitionToGame() {
     createQuitButton();
   }, 500);   
 }
+
+// module.exports = Index;
