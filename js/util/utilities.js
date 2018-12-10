@@ -1,11 +1,13 @@
-export function get(Element) {
+function get(Element) {
   return document.querySelector(Element);
 }
 
-export function getAll(Element) {
+function getAll(Element) {
   return document.querySelectorAll(Element);
 }
 
-export function createEl(element) {
+function createEl(element) {
   return document.createElement(element);
 }
+
+module.exports = { get, getAll, createEl };

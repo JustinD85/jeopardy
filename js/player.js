@@ -1,8 +1,8 @@
-export class Player {
+class Player {
   constructor(name) {
     this.name = name;
     this.score = 0;
   }
 }
 
-// module.exports = Player;
+module.exports = Player;

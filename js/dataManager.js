@@ -1,11 +1,10 @@
-import { data as turingData } from './data.js';
-import { Clue } from './clue.js';
-import { Wager } from './wager.js';
+const  turingData = require( './data.js');
+const Clue = require( './clue.js');
+const  Wager  =require('./wager.js');
 
-export class DataManager {
+class DataManager {
   constructor() {
     this.data = turingData;
-    this.currentObj = {};
     return this.formatData();
   }
 
@@ -66,4 +65,4 @@ export class DataManager {
   }
 }
 
-// module.exports = DataManager;
+module.exports = DataManager;

@@ -1,11 +1,11 @@
-import { DataManager } from './dataManager.js';
-import { Board } from './board.js';
-import { Clue } from './clue.js';
-import { Wager } from './wager.js';
-import { get, getAll, createEl } from './util/utilities.js';
-import { Player } from './player.js';
+const  DataManager  = require('./dataManager.js');
+const  Board  = require('./board.js');
+const  Clue  = require('./clue.js');
+const  Wager  = require('./wager.js');
+const { get, getAll, createEl } = require('./util/utilities.js');
+const Player  = require('./player.js');
 
-export class Game {
+class Game {
   constructor(inPlayers) {
     this.round = 1;
     this.players = inPlayers.map((name) => new Player(name));

@@ -1,4 +1,4 @@
-export class Clue {
+class Clue {
   constructor(question, answer, pointValue, category) {
     this.question = question;
     this.answer = answer;
@@ -9,4 +9,4 @@ export class Clue {
   
 }
 
-// module.exports = Clue;
+module.exports = Clue;

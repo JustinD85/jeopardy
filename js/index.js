@@ -1,6 +1,6 @@
-import { Game } from './game.js';
-import { Player } from './player.js';
-import {get, getAll, createEl} from './util/utilities.js'
+const Game= require('./game.js');
+const Player = require('./player.js');
+const { get, getAll, createEl } = require('./util/utilities.js');
 
 let game;
 const domMethods = {

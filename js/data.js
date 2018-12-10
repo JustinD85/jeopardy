@@ -1,4 +1,4 @@
-export const data = {
+const data = {
   response_code: {
     version: '1.5',
     termsofService: 'http://frontend.turing.io/projects/jeopardy.html',
@@ -706,3 +706,5 @@ export const data = {
     }
   ]
 };
+
+module.exports = data;

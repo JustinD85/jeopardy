@@ -1,4 +1,4 @@
-export class Board {
+class Board {
   constructor() {
     
   }
@@ -6,3 +6,5 @@ export class Board {
     
   }
 }
+
+module.exports = Board;
