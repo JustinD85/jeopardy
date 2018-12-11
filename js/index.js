@@ -1,4 +1,3 @@
-let game;
 const domMethods = {
   render,
   showAnswers,
@@ -135,7 +134,8 @@ function createPlayerArea() {
 function updatePlayers(playerArea) {
   game.players.forEach((player, i) => {
     let { name, score } = player;
-    let user = createElWithClass('article', `.player-${i}`, `${name} score: ${score}`);
+    let playerCard = `${name} score: ${score}`;
+    let user = createElWithClass('article', `.player-${i}`, playerCard);
     playerArea.append(user);
   });
 }
