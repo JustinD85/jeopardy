@@ -1,7 +1,3 @@
-// const Game = require('./game.js');
-// const Player = require('./player.js');
-// const { get, getAll, createElementWith } = require('./util/utilities.js');
-
 let game;
 const domMethods = {
   render,
