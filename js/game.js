@@ -2,7 +2,7 @@
 // const  Board  = require('./board.js');
 // const  Clue  = require('./clue.js');
 // const  Wager  = require('./wager.js');
-// const { get, getAll, createEl } = require('./util/utilities.js');
+// const { get, getAll, createElementWith } = require('./util/utilities.js');
 // const Player  = require('./player.js');
 
 class Game {
