@@ -14,6 +14,11 @@ class DataManager {
 
     return this.data.clues.reduce((acc, clue) => {
       let currentID = clue.categoryId;
+      
+      function generateRandomNumbers(minRange, maxRange) {
+        return Math.floor(Math.random() * (maxRange - minRange)) + minRange;
+      }
+
       let dailyDoubles = [0, 16, 17, 32];
       //0 - 15 // 16 - 31 x 2 // 32++
 
