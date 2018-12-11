@@ -12,7 +12,7 @@ class DataManager {
       6: 0, 7: 0, 8: 0, 9: 0, 10: 0
     };
 
-    return data.clues.reduce((acc, clue) => {
+    return this.data.clues.reduce((acc, clue) => {
       let currentID = clue.categoryId;
       let dailyDoubles = [0, 16, 17, 32];
         //0 - 15 // 16 - 31 x 2 // 32++
