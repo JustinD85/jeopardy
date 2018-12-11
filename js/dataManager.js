@@ -4,41 +4,93 @@ class DataManager {
     return this.formatData();
   }
 
-  formatData(inLimit = 4) {
+  // formatData(inLimit = 4) {
+  //   let clueId = 0;
+  //   let categoryLimit = inLimit;
+  //   let categoryLength = {
+  //     1: 0, 2: 0, 3: 0, 4: 0, 5: 0,
+  //     6: 0, 7: 0, 8: 0, 9: 0, 10: 0
+  //   };
+
+  //   return this.data.clues.reduce((acc, clue) => {
+  //     let currentID = clue.categoryId;
+
+  //     function generateRandomNumbers(minRange, maxRange) {
+  //       return Math.floor(Math.random() * (maxRange - minRange)) + minRange;
+  //     }
+
+  //     let dailyDoubles = [0, 16, 17, 32];
+  //     //0 - 15 // 16 - 31 x 2 // 32++
+
+  //     if (categoryLength[currentID] < categoryLimit) {
+  //       let key = Object.values(this.data.categories).indexOf(currentID);
+  //       let currentCategory = Object.keys(this.data.categories)[key];
+  //       let { question, answer, pointValue } = clue;
+  //       let category = this.parseTitle(currentCategory);
+
+  //       categoryLength[currentID] = ++categoryLength[currentID];
+
+  //       if (dailyDoubles.includes(clueId)) {
+  //         acc[clueId] = new Wager(question, answer, pointValue, category);
+  //       } else {
+  //         acc[clueId] = new Clue(question, answer, pointValue, category);
+  //       }
+  //       clueId++
+  //     }
+  //     return acc;
+  //   }, {})
+  // }
+
+  randomizeArray(inArray) {
+    let tempArray = [];
+    let randomIndex;
+
+    while (inArray.length) {
+      randomIndex = Math.floor(Math.random() * inArray.length);
+      tempArray.push(...inArray.splice(randomIndex))
+    }
+    return tempArray;
+  }
+
+  formatData() {
+    let gameObj = {};
     let clueId = 0;
-    let categoryLimit = inLimit;
-    let categoryLength = {
-      1: 0, 2: 0, 3: 0, 4: 0, 5: 0,
-      6: 0, 7: 0, 8: 0, 9: 0, 10: 0
-    };
+    const notRandomCategories = Object.keys(this.data.categories);
+    const randomCategories = this.randomizeArray(notRandomCategories);
+    let count = 100;
+    let arrayOfClueByPointValues = [];
+    let tempCats;
+    randomCategories.pop(); // so we get 9 cats
 
-    return this.data.clues.reduce((acc, clue) => {
-      let currentID = clue.categoryId;
-      
-      function generateRandomNumbers(minRange, maxRange) {
-        return Math.floor(Math.random() * (maxRange - minRange)) + minRange;
+      while (count <= 400) {
+
+         tempCats = randomCategories.map((categoryKey) => {
+          let log = this.data.clues.filter((clue) => {
+            return clue.categoryId === this.data.categories[categoryKey] &&
+              clue.pointValue === count;
+          })
+          return log[0];
+        })
+        count += 100;
+        arrayOfClueByPointValues.push(tempCats);
       }
+    // console.log(arrayOfClueByPointValues);
 
-      let dailyDoubles = [0, 16, 17, 32];
-      //0 - 15 // 16 - 31 x 2 // 32++
+    return arrayOfClueByPointValues.reduce((acc, pointValueArray) => {
+      pointValueArray.forEach((clue) => {
+        console.log(clue);
+      })
+      // let currentCategory = flippedCategories[clue.categoryId];
+      // let { question, answer, pointValue } = clue;
+      // let category = this.parseTitle(currentCategory);
 
-      if (categoryLength[currentID] < categoryLimit) {
-        let key = Object.values(this.data.categories).indexOf(currentID);
-        let currentCategory = Object.keys(this.data.categories)[key];
-        let { question, answer, pointValue } = clue;
-        let category = this.parseTitle(currentCategory);
+      // //before this, ensure in order, sorted for rounds///
+      // acc[clueId] = new Clue(question, answer, pointValue, category, clueId);
+      // clueId++;
+      // acc.length = clueId;
 
-        categoryLength[currentID] = ++categoryLength[currentID];
- 
-        if (dailyDoubles.includes(clueId)) {
-          acc[clueId] = new Wager(question, answer, pointValue, category);
-        } else {
-          acc[clueId] = new Clue(question, answer, pointValue, category);
-        }
-        clueId++
-      }
       return acc;
-    }, {})
+    }, {});
   }
 
   parseTitle(str) {
@@ -65,6 +117,7 @@ class DataManager {
     return strToArray.join('');
   }
 }
+
 if (typeof module !== 'undefined') {
   module.exports = DataManager;
 }
