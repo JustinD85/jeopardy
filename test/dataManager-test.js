@@ -1,7 +1,8 @@
 const chai = require('chai');
 const expect = chai.expect;
+global.data = require( '../js/data.js');
+global.Clue = require( '../js/Clue.js');
 const DataManager = require('../js/dataManager.js');
-const  turingData = require( '../js/data.js');
 
 describe('Manage Data', function () {
   let currentObj;
@@ -29,7 +30,7 @@ describe('Manage Data', function () {
 
   it('Should be able to manage data', function () {
 
-    expect(currentObj[0].answer).to.equal(turingData.clues[0].answer);
+    expect(currentObj[0].answer).to.equal(data.clues[0].answer);
     expect(currentObj[0].available).to.be.true;
   });
 });

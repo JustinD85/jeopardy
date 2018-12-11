@@ -1,7 +1,3 @@
-// const  turingData = require( './data.js');
-// const Clue = require( './clue.js');
-// const  Wager  =require('./wager.js');
-
 class DataManager {
   constructor() {
     this.data = data;

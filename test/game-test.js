@@ -1,7 +1,10 @@
 const chai = require('chai');
 const expect = chai.expect;
-const Game = require('../js/Game.js');
-const Player = require('../js/player.js');
+global.Player = require('../js/player.js');
+global.Board = require('../js/board.js');
+global.DataManager = require('../js/dataManager');
+global.Wager = require('../js/wager');
+const Game = require('../js/game.js');
 
 describe('Make a game', function () {
   let game;
