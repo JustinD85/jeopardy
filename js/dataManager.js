@@ -4,42 +4,6 @@ class DataManager {
     return this.formatData();
   }
 
-  // formatData(inLimit = 4) {
-  //   let clueId = 0;
-  //   let categoryLimit = inLimit;
-  //   let categoryLength = {
-  //     1: 0, 2: 0, 3: 0, 4: 0, 5: 0,
-  //     6: 0, 7: 0, 8: 0, 9: 0, 10: 0
-  //   };
-
-  //   return this.data.clues.reduce((acc, clue) => {
-  //     let currentID = clue.categoryId;
-
-  //     function generateRandomNumbers(minRange, maxRange) {
-  //       return Math.floor(Math.random() * (maxRange - minRange)) + minRange;
-  //     }
-
-  //     let dailyDoubles = [0, 16, 17, 32];
-  //     //0 - 15 // 16 - 31 x 2 // 32++
-
-  //     if (categoryLength[currentID] < categoryLimit) {
-  //       let key = Object.values(this.data.categories).indexOf(currentID);
-  //       let currentCategory = Object.keys(this.data.categories)[key];
-  //       let { question, answer, pointValue } = clue;
-  //       let category = this.parseTitle(currentCategory);
-
-  //       categoryLength[currentID] = ++categoryLength[currentID];
-
-  //       if (dailyDoubles.includes(clueId)) {
-  //         acc[clueId] = new Wager(question, answer, pointValue, category);
-  //       } else {
-  //         acc[clueId] = new Clue(question, answer, pointValue, category);
-  //       }
-  //       clueId++
-  //     }
-  //     return acc;
-  //   }, {})
-  // }
   flipDataSetValues(object) {
     const tempObj = {};
     for (let key in object) {
@@ -78,7 +42,17 @@ class DataManager {
     }
     return arrayOfClueByPointValues;
   }
-
+  generateDailyDoubleNums() {
+    const dailyDoubles = [];
+    dailyDoubles.push(this.randomNumber(0, 16));
+    dailyDoubles.push(this.randomNumber(16, 24));
+    dailyDoubles.push(this.randomNumber(24, 33));
+    dailyDoubles.push(this.randomNumber(32, 33));
+    return dailyDoubles;
+  }
+  randomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
   formatData() {
     const notRandomCategories = Object.keys(this.data.categories);
     const randomCategoriesKeys = this.randomizeArray(notRandomCategories);
@@ -90,7 +64,7 @@ class DataManager {
         let currentCategory = randomCategoriesKeys[i];
         let { question, answer, pointValue } = clue;
         let category = this.parseTitle(currentCategory);
-        let dailyDoubles = [0, 16, 17, 32];
+        let dailyDoubles = this.generateDailyDoubleNums();
 
         if (dailyDoubles.includes(clueId)) {
           acc[clueId] = new Wager(question, answer, pointValue, category);
