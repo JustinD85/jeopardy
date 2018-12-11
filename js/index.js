@@ -1,7 +1,3 @@
-// const Game = require('./game.js');
-// const Player = require('./player.js');
-// const { get, getAll, createElementWith } = require('./util/utilities.js');
-
 let game;
 const domMethods = {
   render,
@@ -36,7 +32,7 @@ function render(event) {
   }
 }
 function showAnswerOrWager(clueId) {
-  if (game.data[clueId].isDailyDouble) {
+  if (game.data[clueId] instanceof Wager) {
     showWager(clueId);
   } else {
     showAnswers(clueId);
