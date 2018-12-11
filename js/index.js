@@ -13,8 +13,11 @@ const domMethods = {
 /*
   NEED TO USE GAME.UPDATE ONLY TO UPDATE GAME
 */
-console.error('NEED TO USE GAME.UPDATE ONLY TO UPDATE GAME')
-get('#start-btn').addEventListener('click', transitionToGame);
+console.error('NEED TO USE GAME.UPDATE ONLY TO UPDATE GAME');
+
+if (typeof module === 'undefined') {
+  get('#start-btn').addEventListener('click', transitionToGame);
+}
 
 function render(event) {
   
@@ -195,5 +198,5 @@ function removeHide(e) {
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = game;
+  module.exports = domMethods;
 }
