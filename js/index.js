@@ -14,20 +14,21 @@ const domMethods = {
   NEED TO USE GAME.UPDATE ONLY TO UPDATE GAME
 */
 console.error('NEED TO USE GAME.UPDATE ONLY TO UPDATE GAME')
-get('#start-btn').addEventListener('click', transitionToGame);
+$("#start-btn").on("click", transitionToGame);
 
 function render(event) {
-  
-  if (event.target.dataset.id) {
-    showAnswerOrWager(event.target.dataset.id);
-  }
+  let targetOfClue = event.target.dataset.id;
+  let targetOfAnswer = event.target.closest('.answerContainer')
 
-  if (event.target.closest('.answerContainer')) {
+  if (targetOfClue) {
+    showAnswerOrWager(targetOfClue);
+  }
+  if (targetOfAnswer) {
     let clueId = event.target.closest('.clue').dataset.id;
     
     game.update(clueId, event.target.innerText);
     clearPlayerArea();
-    updatePlayers(get('#player-area'));
+    updatePlayers($("#player-area"));
   }
 }
 
@@ -43,22 +44,22 @@ function showWager(clueId) {
   let posValues = [5, 10, 100, 1000];
   let negValues = [-5, -10, -100, -1000];
 
-  let clueContainer = get(`.clue[data-id="${clueId}"]`);
+  let clueContainer = document.querySelector(`.clue[data-id="${clueId}"]`);
 
   clueContainer.innerHTML = '';
   clueContainer.append(createWagerArea(posValues, negValues));
   
-  get('#wager-amount').addEventListener('click', () => {
+  $("#wager-amount").on("click", () => {
     clueContainer.innerHTML = '';
     showAnswers(clueId)
   });
 
-  [...getAll('.number')].forEach((wagerNum) => {
+  [...document.querySelectorAll('.number')].forEach((wagerNum) => {
     wagerNum.addEventListener('click', (e) => {
       const selectedAmt = parseInt(e.target.innerText);
-      const submitAmount = parseInt(get('#wager-amount').innerText);
+      const submitAmount = parseInt($("#wager-amount").text());
       
-      get('#wager-amount').innerText = submitAmount + selectedAmt;
+      $("#wager-amount").text(submitAmount + selectedAmt); 
       game.data[clueId].value = submitAmount + selectedAmt;
     })
   })
@@ -68,85 +69,84 @@ function createWagerArea(positives, negatives) {
   let wagerContainer;
   let tempElement;
 
-  wagerContainer = createElementWith('div', '.wager');
-  wagerContainer.append(createElementWith('h1', '.wager', 'Wager'));
+  wagerContainer = createElWithClass('div', '.wager');
+  wagerContainer.append(createElWithClass('h1', '.wager', 'Wager'));
 
-  tempElement = createElementWith('section', '.ans-pos-box');
-  wagerContainer.append(createWagerValueBox(tempElement, positives));
+  tempElement = createElWithClass('section', '.ans-pos-box');
+  wagerContainer.append(buildWagerValueBox(tempElement, positives));
 
-  tempElement = createElementWith('section', '.ans-neg-box');
-  wagerContainer.append(createWagerValueBox(tempElement, negatives));
+  tempElement = createElWithClass('section', '.ans-neg-box');
+  wagerContainer.append(buildWagerValueBox(tempElement, negatives));
 
-  tempElement = createElementWith('section', '.range-submit');
-  tempElement.append(createElementWith('span', '.wager-range', 'min: 5'));
+  tempElement = createElWithClass('section', '.range-submit');
+  tempElement.append(createElWithClass('span', '.wager-range', 'min: 5'));
   wagerContainer.append(tempElement);
 
-  tempElement.append(createElementWith('button', '#wager-amount', '0'));
+  tempElement.append(createElWithId('button', '#wager-amount', '0'));
   wagerContainer.append(tempElement);
 
-  tempElement.append(createElementWith('span', '.wager-range', 'max: 9999'));
+  tempElement.append(createElWithClass('span', '.wager-range', 'max: 9999'));
   wagerContainer.append(tempElement);
 
   return wagerContainer;
 }
 
-function createWagerValueBox(element, arr) {
+function buildWagerValueBox(element, arr) {
   arr.forEach((value) => {
-    element.append(createElementWith('span', '.number', value));
+    element.append(createElWithClass('span', '.number', value));
   });
   return element;
 }
 
 function showAnswers(clueId) {
-  let clue = get(`.clue[data-id="${clueId}"]`);
+  let clue = $(`.clue[data-id="${clueId}"]`);
   let answerContainer;
-  let answer = game.data[clueId].answer;
+  let correctAnswer = game.data[clueId].answer;
+  let answersArr = [correctAnswer, 'wrong', 'wrong', 'wrong'];
 
   // will need this when questions are full screen
   // let cat = game.data[clueId].category;
-  // let question = game.data[clueId].question;
-  // get(`.clue[data-id="${clueId}"]`).innerHTML = question;
+  // $(`.clue[data-id="${clueId}"]`).html(game.data[clueId].question);
   
-  answerContainer = createElementWith('div', '.answerContainer');
-  answerContainer.append(createElementWith('div', '.answer', answer));
-  answerContainer.append(createElementWith('div', '.answer', 'yo'));
-  answerContainer.append(createElementWith('div', '.answer', 'sup'));
-  answerContainer.append(createElementWith('div', '.answer', 'foo'));
-  clue.append(answerContainer);
+  answerContainer = createElWithClass('div', '.answerContainer');
+  answersArr.forEach(answer => { 
+    answerContainer.append(createElWithClass('div', '.answer', answer));
+  });
 
-  clue.append(createElementWith('button', '.contBtn', 'Continue'));
+  clue.append(answerContainer);
+  clue.append(createElWithClass('button', '.contBtn', 'Continue'));
 }
 
 function updateBoard() {
-  let updateBoard = game.board.createBoard();
-  if (get('#game-board')) get('#game-board').remove();
+  if ($("#game-board")) $("#game-board").remove();
 
-  get('#view').append(updateBoard);
-  get('#game-board').addEventListener('click', render);
+  $("#view").append(game.board.createBoard());
+  console.error('add click event to clue not board')
+  $("#game-board").on("click", render);
 }
 
 function createPlayerArea() {
-  let playerArea = createElementWith('section', '#player-area');
+  let playerArea = createElWithId('section', '#player-area');
 
-  get('#view').append(playerArea);
+  $("#view").append(playerArea);
   updatePlayers(playerArea);
 }
 
 function updatePlayers(playerArea) {
-
   game.players.forEach((player, i) => {
     let { name, score } = player;
-    let user = createElementWith('article', `.player-${i}`, `${name} score: ${score}`);
+    let user = createElWithClass('article', `.player-${i}`, `${name} score: ${score}`);
     playerArea.append(user);
   });
 }
+
 function clearPlayerArea() {
-  get('#player-area').innerHTML = '';
+  $("#player-area").html("");
 }
 
 function createQuitButton() {
-  get('#view').append(createElementWith('article', '#quit', 'QUIT'));
-  get('#quit').addEventListener('click', resetGame);
+  $("#view").append(createElWithId('article', '#quit', 'QUIT'));
+  $("#quit").on("click", resetGame);
 }
 
 function resetGame() {
@@ -154,30 +154,19 @@ function resetGame() {
 }
 
 function clearScreen() {
-  get('#view').innerHTML = '';
-}
-
-function showGame() {
-
-}
-
-function showPlayerScores() {
-  const playerOneName = get('#p1-name-input').value;
-  const playerTwoName = get('#p2-name-input').value;
-  const playerThreeName = get('#p3-name-input').value;
-
-  return [playerOneName, playerTwoName, playerThreeName];
+  $("#view").html("");
 }
 
 function transitionToGame() {
-  const [playerOneName, playerTwoName, playerThreeName] = showPlayerScores();
-
+  const playerNames = $('.player-name-input').toArray().map(player => { 
+    return player.value;
+  });
   // transition img below
-  get('#view').innerHTML = '<img src="./img/loading.gif">';
+  $("#view").html(`<img src="./img/loading.gif">`);
 
   // timeout is to display the transition screen
   window.setTimeout(() => {
-    game = new Game([playerOneName, playerTwoName, playerThreeName]);
+    game = new Game(playerNames);
     clearScreen();
     createPlayerArea();
     createQuitButton();
@@ -189,7 +178,6 @@ function removeHide(e) {
   if (e.classList.contains('hide')) {
     e.classList.remove('hide');
   } else {
-    
     e.classList.add('hide');
   }
 }
