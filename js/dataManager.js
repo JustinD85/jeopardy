@@ -40,6 +40,13 @@ class DataManager {
   //     return acc;
   //   }, {})
   // }
+  flipDataSetValues(object) {
+    const tempObj = {};
+    for (let key in object) {
+      tempObj[object[key]] = key;
+    }
+    return tempObj;
+  }
 
   randomizeArray(inArray) {
     let tempArray = [];
@@ -52,42 +59,46 @@ class DataManager {
     return tempArray;
   }
 
-  formatData() {
-    let gameObj = {};
-    let clueId = 0;
-    const notRandomCategories = Object.keys(this.data.categories);
-    const randomCategories = this.randomizeArray(notRandomCategories);
+  createMatrixFromData(maxPointValue, randomCategoriesKeys) {
     let count = 100;
-    let arrayOfClueByPointValues = [];
     let tempCats;
-    randomCategories.pop(); // so we get 9 cats
+    let arrayOfClueByPointValues = [];
+    randomCategoriesKeys.pop(); // so we get 9 cats
+    while (count <= maxPointValue) {
 
-      while (count <= 400) {
-
-         tempCats = randomCategories.map((categoryKey) => {
-          let log = this.data.clues.filter((clue) => {
-            return clue.categoryId === this.data.categories[categoryKey] &&
-              clue.pointValue === count;
-          })
-          return log[0];
+      tempCats = randomCategoriesKeys.map((categoryKey) => {
+        let log = this.data.clues.filter((clue) => {
+          return clue.categoryId === this.data.categories[categoryKey] &&
+            clue.pointValue === count;
         })
-        count += 100;
-        arrayOfClueByPointValues.push(tempCats);
-      }
-    // console.log(arrayOfClueByPointValues);
-
-    return arrayOfClueByPointValues.reduce((acc, pointValueArray) => {
-      pointValueArray.forEach((clue) => {
-        console.log(clue);
+        return log[0];
       })
-      // let currentCategory = flippedCategories[clue.categoryId];
-      // let { question, answer, pointValue } = clue;
-      // let category = this.parseTitle(currentCategory);
+      count += 100;
+      arrayOfClueByPointValues.push(tempCats);
+    }
+    return arrayOfClueByPointValues;
+  }
 
-      // //before this, ensure in order, sorted for rounds///
-      // acc[clueId] = new Clue(question, answer, pointValue, category, clueId);
-      // clueId++;
-      // acc.length = clueId;
+  formatData() {
+    const notRandomCategories = Object.keys(this.data.categories);
+    const randomCategoriesKeys = this.randomizeArray(notRandomCategories);
+
+    return this.createMatrixFromData(400, randomCategoriesKeys).reduce((acc, pointValueArray, i) => {
+      let clueId = (100 * i) / 100;
+
+      pointValueArray.forEach((clue, i) => {
+        let currentCategory = randomCategoriesKeys[i];
+        let { question, answer, pointValue } = clue;
+        let category = this.parseTitle(currentCategory);
+        let dailyDoubles = [0, 16, 17, 32];
+
+        if (dailyDoubles.includes(clueId)) {
+          acc[clueId] = new Wager(question, answer, pointValue, category);
+        } else {
+          acc[clueId] = new Clue(question, answer, pointValue, category);
+        }
+        clueId += 4;
+      })
 
       return acc;
     }, {});
