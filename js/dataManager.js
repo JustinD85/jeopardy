@@ -10,32 +10,32 @@ class DataManager {
 
   formatData(inLimit = 4) {
     let clueId = 0;
-    let limit = inLimit;
-    let storedData = {
+    let categoryLimit = inLimit;
+    let categoryLength = {
       1: 0, 2: 0, 3: 0, 4: 0, 5: 0,
       6: 0, 7: 0, 8: 0, 9: 0, 10: 0
     };
 
     return this.data.clues.reduce((acc, clue) => {
       let currentID = clue.categoryId;
-      let dailyDouble = 0;
+      let dailyDoubles = [0, 16, 17, 32];
+        //0 - 15 // 16 - 31 x 2 // 32++
 
-      if (clueId < 20 && storedData[currentID] < limit) {
+      if (categoryLength[currentID] < categoryLimit) {
         let key = Object.values(this.data.categories).indexOf(currentID);
         let currentCategory = Object.keys(this.data.categories)[key];
         let { question, answer, pointValue } = clue;
         let category = this.parseTitle(currentCategory);
 
-        storedData[currentID] = ++storedData[currentID];
-
-        if (clueId === dailyDouble) {
+        categoryLength[currentID] = ++categoryLength[currentID];
+ 
+        if (dailyDoubles.includes(clueId)) {
           acc[clueId] = new Wager(question, answer, pointValue, category, true);
         } else {
           acc[clueId] = new Clue(question, answer, pointValue, category);
         }
         clueId++
       }
-
       return acc;
     }, {})
   }

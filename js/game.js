@@ -49,24 +49,50 @@ class Game {
 
   updateRound() {
     let bool = false;
-    if (this.round < 2) {
-      for (let i = 0; i < 20; i++) {
+    if (this.round  === 1) {
+      for (let i = 0; i < 16; i++) {
         if (!bool) {
           bool = this.data[i].available;
         }
       }
 
       if (!bool) {
-        console.error("Next Round");
+        console.error("2nd Round");
         this.round++;
         updateBoard();
       } 
-    }else {
-      console.error('final round')
-      updateBoard();
+    }
+
+    if (this.round === 2) {
+      for (let i = 0; i < 32; i++) {
+        if (!bool) {
+          bool = this.data[i].available;
+        }
+      }
+
+      if (!bool) {
+        console.error('final round')
+        this.round++;
+        updateBoard();
+      } 
+    }
+
+    if (this.round === 3) {
+      for (let i = 0; i < 33; i++) {
+        if (!bool) {
+          bool = this.data[i].available;
+        }
+      }
+
+      if (!bool) {
+        console.error("Game Over");
+        updateBoard();
+      } 
+
     }
   }
 
+  
 }
 
 if (typeof module !== 'undefined') {

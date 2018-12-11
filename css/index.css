@@ -18,7 +18,7 @@ body {
   border: 1px solid green;
   background-color: lightgrey;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 .category {
