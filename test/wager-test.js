@@ -1,7 +1,7 @@
 const chai = require('chai');
 const expect = chai.expect;
-const Clue = require('../js/clue.js');
-const Wager = require('../js/wager.js');
+global.Clue = require('../js/Clue.js');
+const Wager = require('../js/Wager');
 
 describe('Make a wager', function () {
   let wager;
