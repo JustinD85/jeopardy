@@ -16,7 +16,7 @@ const domMethods = {
 console.error('NEED TO USE GAME.UPDATE ONLY TO UPDATE GAME');
 
 if (typeof module === 'undefined') {
-  get('#start-btn').addEventListener('click', transitionToGame);
+  $("#start-btn").on("click", transitionToGame);
 }
 
 
