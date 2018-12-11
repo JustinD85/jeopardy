@@ -1,10 +1,3 @@
-// const  DataManager  = require('./dataManager.js');
-// const  Board  = require('./board.js');
-// const  Clue  = require('./clue.js');
-// const  Wager  = require('./wager.js');
-// const { get, getAll, createElementWith } = require('./util/utilities.js');
-// const Player  = require('./player.js');
-
 class Game {
   constructor(inPlayers) {
     this.round = 1;
