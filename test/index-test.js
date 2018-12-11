@@ -1,20 +1,19 @@
-// const chai = require('chai');
-// const expect = chai.expect;
-// const Index = require('../js/Index.js');
+const chai = require('chai');
+const expect = chai.expect;
+const spies = require('chai-spies')
+chai.use(spies);
+global.domMethods = require('../js/Index.js');
 
-// describe('Manage DOM things', function () {
+describe('Start game', function () {
 
-//   // beforeEach(function () {
-//   //   index = new Index();
-//   // });
+  beforeEach(function () {
 
-//   it('unclear test....', function () {
-//     let index = new Index();
+   chai.spy.on(global.domMethods,['transitionToGame'], ()=> true)
+  });
 
-//     expect(index.transitionToGame).to.equal('?');
+  it('should be able to transition from start screen to game', function () {
 
-//   });
-
-// });
-
-/////SPIESS?!!??!/////
+    domMethods.transitionToGame();
+    expect(domMethods.transitionToGame).to.have.been.called(1);
+  });
+});

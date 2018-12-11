@@ -12,8 +12,13 @@ const domMethods = {
 /*
   NEED TO USE GAME.UPDATE ONLY TO UPDATE GAME
 */
-console.error('NEED TO USE GAME.UPDATE ONLY TO UPDATE GAME')
-$("#start-btn").on("click", transitionToGame);
+
+console.error('NEED TO USE GAME.UPDATE ONLY TO UPDATE GAME');
+
+if (typeof module === 'undefined') {
+  get('#start-btn').addEventListener('click', transitionToGame);
+}
+
 
 function render(event) {
   let targetOfClue = event.target.dataset.id;
@@ -183,5 +188,5 @@ function removeHide(e) {
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = game;
+  module.exports = domMethods;
 }
