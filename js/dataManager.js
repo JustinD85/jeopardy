@@ -26,7 +26,7 @@ class DataManager {
         categoryLength[currentID] = ++categoryLength[currentID];
  
         if (dailyDoubles.includes(clueId)) {
-          acc[clueId] = new Wager(question, answer, pointValue, category, true);
+          acc[clueId] = new Wager(question, answer, pointValue, category);
         } else {
           acc[clueId] = new Clue(question, answer, pointValue, category);
         }
