@@ -23,14 +23,13 @@ describe('Manage Data', function () {
   });
 
   it('Should be able to have data', function () {
-
-    expect(currentObj[0].question).to
-      .equal(`Scorecard Report" & "Peter Jacobsen Plugged In" are seen on the sports channel devoted to this`);
+    
+    expect(currentObj[0].answer).to.equal('golf');
   });
 
   it('Should be able to manage data', function () {
 
-    expect(currentObj[0].answer).to.equal(data.clues[0].answer);
+    expect(currentObj[0].answer).to.equal(global.data.clues[0].answer);
     expect(currentObj[0].available).to.be.true;
   });
 });

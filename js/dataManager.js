@@ -15,7 +15,7 @@ class DataManager {
     return this.data.clues.reduce((acc, clue) => {
       let currentID = clue.categoryId;
       let dailyDoubles = [0, 16, 17, 32];
-        //0 - 15 // 16 - 31 x 2 // 32++
+      //0 - 15 // 16 - 31 x 2 // 32++
 
       if (categoryLength[currentID] < categoryLimit) {
         let key = Object.values(this.data.categories).indexOf(currentID);
