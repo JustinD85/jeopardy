@@ -269,6 +269,16 @@ function transitionToGame() {
   }, 500);
 }
 
-// if (typeof module !== 'undefined') {
-  // module.exports = Index;
-// }
+function removeHide(e) {
+  if (e.classList.contains('hide')) {
+    e.classList.remove('hide');
+  } else {
+    
+    e.classList.add('hide');
+  }
+  console.log(e);
+}
+
+if (typeof module !== 'undefined') {
+  module.exports = game;
+}

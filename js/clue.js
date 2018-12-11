@@ -6,8 +6,8 @@ class Clue {
     this.value = pointValue;
     this.category = category;
   }
-  
 }
+
 if (typeof module !== 'undefined') {
   module.exports = Clue;
 }
