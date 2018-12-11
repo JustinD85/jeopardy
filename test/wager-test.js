@@ -36,8 +36,8 @@ describe('Make a wager', function () {
     expect(wager.category).to.equal('Colors');
   });
 
-  it('Should be able to have a Daily Double', function () {
+  it('Should be an instance of Wager', function () {
 
-    expect(wager.isDailyDouble).to.equal(true);
+    expect(wager instanceof Wager).to.equal(true);
   });
 });

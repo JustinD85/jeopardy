@@ -15,7 +15,6 @@ const domMethods = {
 */
 console.error('NEED TO USE GAME.UPDATE ONLY TO UPDATE GAME')
 get('#start-btn').addEventListener('click', transitionToGame);
-// get('#game-board').addEventListener('click', render);
 
 function render(event) {
   
@@ -31,8 +30,9 @@ function render(event) {
     updatePlayers(get('#player-area'));
   }
 }
+
 function showAnswerOrWager(clueId) {
-  if (game.data[clueId].isDailyDouble) {
+  if (game.data[clueId] instanceof Wager) {
     showWager(clueId);
   } else {
     showAnswers(clueId);
@@ -69,7 +69,7 @@ function createWagerArea(positives, negatives) {
   let tempElement;
 
   wagerContainer = createElementWith('div', '.wager');
-  wagerContainer.append(createElementWith('h1', '.daily-double', 'Wager'));
+  wagerContainer.append(createElementWith('h1', '.wager', 'Wager'));
 
   tempElement = createElementWith('section', '.ans-pos-box');
   wagerContainer.append(createWagerValueBox(tempElement, positives));
@@ -180,8 +180,8 @@ function transitionToGame() {
     game = new Game([playerOneName, playerTwoName, playerThreeName]);
     clearScreen();
     createPlayerArea();
-    updateBoard();
     createQuitButton();
+    updateBoard();
   }, 500);
 }
 
@@ -192,7 +192,6 @@ function removeHide(e) {
     
     e.classList.add('hide');
   }
-  console.log(e);
 }
 
 if (typeof module !== 'undefined') {
