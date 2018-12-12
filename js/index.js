@@ -23,7 +23,6 @@ function render(event) {
 
   if (targetOfAnswer) {
     let clueId = event.target.id;
-    console.log(clueId);
     game.update(clueId, event.target.innerText);
     clearPlayerArea();
     updateBoard();
@@ -130,21 +129,24 @@ function randomizeArray(inArray) {
 function getAllCluesByCategoryId(categoryId,clueId) {
   let matchingClues = data.clues.filter((clue) => clue.categoryId === categoryId);
   let correctAnswer = game.data[clueId].answer;
-  matchingClues.filter(clue => clue.answer !== correctAnswer);
+
+  matchingClues = matchingClues.filter(clue => clue.answer !== correctAnswer);
   matchingClues = randomizeArray(matchingClues);
+
   return matchingClues.splice(-3).map(clue => clue.answer);
 }
 
-function showAnswers(clueId) {
+function showAnswers(clueBox, clueId) {
   let clue = $(`.clue[data-id="${clueId}"]`);
   let answerContainer;
   let correctAnswer = game.data[clueId].answer;
-  console.log(game.data[clueId].categoryId)
-  let answersArr = getAllCluesByCategoryId(game.data[clueId].categoryId, clueId).push(correctAnswer);
-  answersArr = randomizeArray(answersArr);
+  let answers = getAllCluesByCategoryId(game.data[clueId].categoryId, clueId);
+  answers.push(correctAnswer);
+  answers = randomizeArray(answers);
+  answers = answers.map(answer => answer);
 
   answerContainer = createElWithClass('div', '.answerContainer');
-  answersArr.forEach(answer => {
+  answers.forEach(answer => {
     let answerBox = createElWithId('div', `#${clueId}`, answer)
     answerBox.classList.add('answer');
     answerContainer.append(answerBox);
