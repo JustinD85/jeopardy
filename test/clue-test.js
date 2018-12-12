@@ -7,11 +7,11 @@ describe('Make a clue', function () {
 
   beforeEach(function () {
 
-    clue = new Clue('What is red', 'A color', 100, 'Colors');
+    clue = new Clue({ question: 'What is red', answer: 'A color', pointValue: 100, category: 'Colors'});
   });
 
   it('Should be able to have a question', function () {
-
+    
     expect(clue.question).to.equal('What is red');
   });
 
