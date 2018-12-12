@@ -8,7 +8,7 @@ describe('Make a wager', function () {
 
   beforeEach(function () {
 
-    wager = new Wager('What is red', 'A color', 100, 'Colors', true);
+    wager = new Wager({ question: 'What is red', answer: 'A color', pointValue: 100, category: 'Colors' });
   });
 
   it('Should be able to have a question', function () {
@@ -39,5 +39,10 @@ describe('Make a wager', function () {
   it('Should be an instance of Wager', function () {
 
     expect(wager instanceof Wager).to.equal(true);
+  });
+
+  it('Should be able to update wager value', function () {
+
+    expect(wager.updateValue(1)).to.equal(100);
   });
 });
