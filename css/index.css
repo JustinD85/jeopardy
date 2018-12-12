@@ -3,52 +3,69 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: 'Handlee', cursive;
+  font-family: 'Black And White Picture', sans-serif;
+  font-family: 'Amatic SC', cursive;
+  font-family: 'Fredoka One', cursive;
+  font-weight: bolder;
 }
 
 body {
   height: 100vh;
-  background:#0099e0;
+  background: #0099e0;
 }
-#title{
+
+.birds{
+  position: absolute;
+  z-index: -1;
+}
+
+#title {
   font-size: 4rem;
   text-align: center;
 }
-.profile-picture{
+
+.profile-picture {
   border-radius: 50%;
   margin-left: 25px;
   /* border: 1px solid #ddd; */
-  width:50px;
+  width: 50px;
 }
-.profile-picture:hover{
+
+.profile-picture:hover {
   border: 1px solid white;
 }
 
-input{
+input {
   border-radius: 5px;
   /* transition: 10s; */
-  height:2rem;
-  width:30%;
-  margin:5%;
+  height: 2rem;
+  width: 30%;
+  margin: 5%;
   border: 1px lightblue solid;
 }
 
-input{
+input {
   transition: 2s;
   animation: infinite 1400ms rotate-color;
 }
 
-@keyframes rotate-color{
-  0%,100%{
+@keyframes rotate-color {
+
+  0%,
+  100% {
     color: lightblue
   }
-  50%{
+
+  50% {
     color: purple
   }
 }
-.hide{
-  size:0;
+
+.hide {
+  size: 0;
   height: 0;
-  width:0;
+  width: 0;
   visibility: hidden;
 }
 
@@ -81,7 +98,7 @@ input{
   margin: 2px;
 }
 
-.number{
+.number {
   background: lightgoldenrodyellow;
 }
 
@@ -90,7 +107,7 @@ input{
   width: 100%;
   text-align: center;
   margin: 0 auto;
-  background:green;
+  background: green;
 }
 
 .player-0 {

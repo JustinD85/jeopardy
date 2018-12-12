@@ -1,5 +1,5 @@
 class Clue {
-  constructor(question, answer, pointValue, category) {
+  constructor({ question, answer, pointValue, category }) {
     this.question = question;
     this.answer = answer;
     this.available = true;
