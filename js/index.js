@@ -14,8 +14,8 @@ console.error('NEED TO USE GAME.UPDATE ONLY TO UPDATE GAME');
 function render(event) {
   let targetOfClue = event.target.dataset.id;
   let targetOfAnswer = event.target.closest('.answerContainer')
-
-  if (targetOfClue) {
+  const isRoundOneOrTwo = targetOfClue && game.round < 3;
+  if (isRoundOneOrTwo && game.canClickClue) {
     showAnswerOrWager(targetOfClue);
   }
   if (targetOfAnswer) {
@@ -28,6 +28,7 @@ function render(event) {
 }
 
 function showAnswerOrWager(clueId) {
+  game.canClickClue = false;
   if (game.data[clueId] instanceof Wager) {
     showWager(clueId);
   } else {

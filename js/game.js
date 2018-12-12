@@ -4,14 +4,15 @@ class Game {
     this.players = inPlayers.map((name) => new Player(name));
     this.board = new Board();
     this.data = new DataManager();
+    this.canClickClue = true;
   }
 
   update(clueId, playerGuess) {
     const isCorrect = this.checkAnswer(clueId, playerGuess);
     this.data[clueId].available = false;
+    this.canClickClue = true;
     this.updatePlayerScore(isCorrect, clueId);
     this.rotateCurrentPlayer();
-
     this.updateRound();
     this.determineWinner();
   }
