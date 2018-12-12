@@ -15,14 +15,20 @@ function render(event) {
   let targetOfClue = event.target.dataset.id;
   let targetOfAnswer = event.target.closest('.answerContainer')
   const isRoundOneOrTwo = targetOfClue && game.round < 3;
+
   if (isRoundOneOrTwo && game.canClickClue) {
     showAnswerOrWager(targetOfClue);
   }
+
   if (targetOfAnswer) {
     let clueId = event.target.closest('.clue').dataset.id;
-
+    console.log(clueId)
     game.update(clueId, event.target.innerText);
+    // document.querySelector(`.clue[data-id="${clueId}"]`).innerHTML = '';
     clearPlayerArea();
+    updateBoard();
+    // game.data[clueId].available = false;
+    console.log('anser')
     updatePlayers($("#player-area"));
   }
 }
@@ -141,9 +147,14 @@ function createBoard() {
 
     column.append(row);
     for (let j = 0; j < rowCount; j++) {
-      let clueValue = `<h1> ${game.data[id].value}</h1>`;
-      row = createElWithClass('article', '.clue', '', clueValue);
-      row.dataset.id = `${id}`;
+      let clueValue = '';
+      if (game.data[id].available) {
+        clueValue = `<h1> ${game.data[id].value}</h1>`;
+        row = createElWithClass('article', '.clue', '', clueValue);
+        row.dataset.id = `${id}`;
+      } else {
+        row = createElWithClass('article', '.clue', '', clueValue);
+      }
       id++;
       column.append(row);
     }
