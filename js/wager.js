@@ -1,6 +1,6 @@
 class Wager extends Clue {
-  constructor({ question, answer, pointValue, category }) {
-    super({ question, answer, pointValue, category });
+  constructor({ question, answer, pointValue, category, categoryId }) {
+    super({ question, answer, pointValue, category, categoryId });
   }
 
   updateValue(num) {

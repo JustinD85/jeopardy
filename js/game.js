@@ -17,6 +17,10 @@ class Game {
     this.determineWinner();
   }
 
+  getAllCluesById(clueId) {
+    getAllCluesByCategoryId(categoryId)
+  }
+
   checkAnswer(clueId, playerGuess) {
     const correctAnswer = this.data[clueId].answer;
     
