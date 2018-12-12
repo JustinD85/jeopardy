@@ -9,29 +9,24 @@ const domMethods = {
   transitionToGame
 }
 
-/*
-  NEED TO USE GAME.UPDATE ONLY TO UPDATE GAME
-*/
-
 console.error('NEED TO USE GAME.UPDATE ONLY TO UPDATE GAME');
-
-if (typeof module === 'undefined') {
-  $("#start-btn").on("click", transitionToGame);
-}
 
 function render(event) {
   let targetOfClue = event.target.dataset.id;
-  let targetOfAnswer = event.target.closest('.question')
-  
-  if (targetOfClue) {
+  let targetOfAnswer = event.target.closest('.question');
+  const isRoundOneOrTwo = targetOfClue && game.round < 3;
+
+  if (isRoundOneOrTwo && game.canClickClue) {
     $("#game-board").hide();
     showAnswerOrWager(targetOfClue);
   }
+
   if (targetOfAnswer) {
     let clueId = event.target.id;
-    
+    console.log(clueId);
     game.update(clueId, event.target.innerText);
     clearPlayerArea();
+    updateBoard();
     updatePlayers($("#player-area"));
   }
 }
@@ -39,8 +34,10 @@ function render(event) {
 function showAnswerOrWager(clueId) {
   let clueBox = buildClueBox(clueId);
 
+  game.canClickClue = false;
   if (game.data[clueId] instanceof Wager) {
-    showWager(clueBox, clueId);
+
+    showWager(clueId);
   } else {
     showAnswers(clueBox, clueId);
   }
@@ -54,19 +51,22 @@ function showWager(clueId) {
 
   clueContainer.innerHTML = '';
   clueContainer.append(createWagerArea(posValues, negValues));
-  
+
   $("#wager-amount").on("click", () => {
     clueContainer.innerHTML = '';
     
     showAnswers(buildClueBox(clueId), clueId);
   });
 
+  
   [...document.querySelectorAll('.number')].forEach((wagerNum) => {
+    
     wagerNum.addEventListener('click', (e) => {
+
       const selectedAmt = parseInt(e.target.innerText);
       const submitAmount = parseInt($("#wager-amount").text());
-      
-      $("#wager-amount").text(submitAmount + selectedAmt); 
+
+      $("#wager-amount").text(submitAmount + selectedAmt);
       game.data[clueId].value = submitAmount + selectedAmt;
     })
   })
@@ -144,8 +144,44 @@ function showAnswers(clueBox, clueId) {
 function updateBoard() {
   if ($("#game-board")) $("#game-board").remove();
 
-  $("#view").append(game.board.createBoard());
+  $("#view").append(createBoard());
   $("#game-board").on("click", render);
+}
+function createBoard() {
+  let tempGameBoard = createElWithId('main', '#game-board');
+  
+  let id = 0;
+  let colCount = 4;
+  let rowCount = 4;
+  if (game.round === 2) {
+    id = 16;
+  } else if (game.round === 3) {
+    colCount = 1;
+    rowCount = 1;
+    id = 32;
+  }
+
+  for (let i = 0; i < colCount; i++) {
+    let column = createElWithClass('section', '.category');
+    let clueCat = `<h1>${game.data[id].category}</h1>`;
+    let row = createElWithClass('article', '.clue', '', clueCat);
+
+    column.append(row);
+    for (let j = 0; j < rowCount; j++) {
+      let clueValue = '';
+      if (game.data[id].available) {
+        clueValue = `<h1> ${game.data[id].value}</h1>`;
+        row = createElWithClass('article', '.clue', '', clueValue);
+        row.dataset.id = `${id}`;
+      } else {
+        row = createElWithClass('article', '.clue', '', clueValue);
+      }
+      id++;
+      column.append(row);
+    }
+    tempGameBoard.append(column);
+  }
+  return tempGameBoard;
 }
 
 function createPlayerArea() {
@@ -182,7 +218,7 @@ function clearScreen() {
 }
 
 function transitionToGame() {
-  const playerNames = $('.player-name-input').toArray().map(player => { 
+  const playerNames = $('.player-name-input').toArray().map(player => {
     return player.value;
   });
   // transition img below
@@ -208,4 +244,6 @@ function removeHide(e) {
 
 if (typeof module !== 'undefined') {
   module.exports = domMethods;
+} else {
+  $("#start-btn").on("click", transitionToGame);
 }

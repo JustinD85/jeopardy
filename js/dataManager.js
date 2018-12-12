@@ -4,36 +4,80 @@ class DataManager {
     return this.formatData();
   }
 
-  formatData(inLimit = 4) {
-    let clueId = 0;
-    let categoryLimit = inLimit;
-    let categoryLength = {
-      1: 0, 2: 0, 3: 0, 4: 0, 5: 0,
-      6: 0, 7: 0, 8: 0, 9: 0, 10: 0
-    };
+  flipDataSetValues(object) {
+    const tempObj = {};
+    for (let key in object) {
+      tempObj[object[key]] = key;
+    }
+    return tempObj;
+  }
 
-    return this.data.clues.reduce((acc, clue) => {
-      let currentID = clue.categoryId;
-      let dailyDoubles = [0, 16, 17, 32];
-      //0 - 15 // 16 - 31 x 2 // 32++
+  randomizeArray(inArray) {
+    let tempArray = [];
+    let randomIndex;
 
-      if (categoryLength[currentID] < categoryLimit) {
-        let key = Object.values(this.data.categories).indexOf(currentID);
-        let currentCategory = Object.keys(this.data.categories)[key];
-        let { question, answer, pointValue } = clue;
-        let category = this.parseTitle(currentCategory);
+    while (inArray.length) {
+      randomIndex = Math.floor(Math.random() * inArray.length);
+      tempArray.push(...inArray.splice(randomIndex))
+    }
+    return tempArray;
+  }
+  
+  getCluesForBoard(randomCategoriesKeys) {
+    let arrayOfClueByPointValues = [];
+    randomCategoriesKeys.pop(); // so we get 9 cats
+    
+    randomCategoriesKeys.forEach((categoryKey) => {
 
-        categoryLength[currentID] = ++categoryLength[currentID];
- 
-        if (dailyDoubles.includes(clueId)) {
-          acc[clueId] = new Wager(question, answer, pointValue, category);
-        } else {
-          acc[clueId] = new Clue(question, answer, pointValue, category);
-        }
-        clueId++
-      }
+      let allCluesThisCat = this.data.clues.filter((clue) => {
+        return clue.categoryId === this.data.categories[categoryKey];
+      })
+
+      allCluesThisCat = this.randomizeArray(allCluesThisCat);
+      arrayOfClueByPointValues.push(allCluesThisCat.find((clue) => clue.pointValue === 100));
+      arrayOfClueByPointValues.push(allCluesThisCat.find((clue) => clue.pointValue === 200));
+      arrayOfClueByPointValues.push(allCluesThisCat.find((clue) => clue.pointValue === 300));
+      arrayOfClueByPointValues.push(allCluesThisCat.find((clue) => clue.pointValue === 400));
+    })
+
+    arrayOfClueByPointValues.splice(36);
+    return arrayOfClueByPointValues;
+  }
+
+  generateDailyDoubleNums() {
+    const dailyDoubles = [];
+    dailyDoubles.push(this.randomNumber(0, 16));
+    dailyDoubles.push(this.randomNumber(16, 24));
+    dailyDoubles.push(this.randomNumber(24, 33));
+    dailyDoubles.push(this.randomNumber(32, 36));
+
+    return dailyDoubles;
+  }
+  randomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
+
+  formatData() {
+    const notRandomCategories = Object.keys(this.data.categories);
+    const randomCategoriesKeys = this.randomizeArray(notRandomCategories);
+    const flippedTuringCategories = this.flipDataSetValues(this.data.categories);
+    const dailyDoubles = this.generateDailyDoubleNums();
+
+    return this.getCluesForBoard(randomCategoriesKeys).reduce((acc, clue, clueIdForDOM) => {
+      let currentCategory = flippedTuringCategories[clue.categoryId];
+      let clueOptions = {
+        question: clue.question,
+        answer: clue.answer,
+        pointValue: clue.pointValue,
+        category: this.parseTitle(currentCategory)
+      };
+      
+      if (clueIdForDOM > 31 && !dailyDoubles.includes(clueIdForDOM)) return acc; 
+      if (dailyDoubles.includes(clueIdForDOM)) { acc.push(new Wager(clueOptions)) }
+      else { acc.push(new Clue(clueOptions)) }
+      
       return acc;
-    }, {})
+    }, []);
   }
 
   parseTitle(str) {
@@ -60,6 +104,7 @@ class DataManager {
     return strToArray.join('');
   }
 }
+
 if (typeof module !== 'undefined') {
   module.exports = DataManager;
 }
