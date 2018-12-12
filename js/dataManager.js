@@ -69,6 +69,7 @@ class DataManager {
         question: clue.question,
         answer: clue.answer,
         pointValue: clue.pointValue,
+        categoryId: clue.categoryId,
         category: this.parseTitle(currentCategory)
       };
       

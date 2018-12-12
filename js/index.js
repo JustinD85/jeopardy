@@ -97,15 +97,32 @@ function buildWagerValueBox(element, arr) {
   return element;
 }
 
+function randomizeArray(inArray) {
+  let tempArray = [];
+  let randomIndex;
+
+  while (inArray.length) {
+    randomIndex = Math.floor(Math.random() * inArray.length);
+    tempArray.push(...inArray.splice(randomIndex))
+  }
+  return tempArray;
+}
+
+function getAllCluesByCategoryId(categoryId,clueId) {
+  let matchingClues = data.clues.filter((clue) => clue.categoryId === categoryId);
+  let correctAnswer = game.data[clueId].answer;
+  matchingClues.filter(clue => clue.answer !== correctAnswer);
+  matchingClues = randomizeArray(matchingClues);
+  return matchingClues.splice(-3).map(clue => clue.answer);
+}
+
 function showAnswers(clueId) {
   let clue = $(`.clue[data-id="${clueId}"]`);
   let answerContainer;
   let correctAnswer = game.data[clueId].answer;
-  let answersArr = [correctAnswer, 'wrong', 'wrong', 'wrong'];
-
-  // will need this when questions are full screen
-  // let cat = game.data[clueId].category;
-  // $(`.clue[data-id="${clueId}"]`).html(game.data[clueId].question);
+  console.log(game.data[clueId].categoryId)
+  let answersArr = getAllCluesByCategoryId(game.data[clueId].categoryId, clueId).push(correctAnswer);
+  answersArr = randomizeArray(answersArr);
 
   answerContainer = createElWithClass('div', '.answerContainer');
   answersArr.forEach(answer => {
@@ -124,7 +141,7 @@ function updateBoard() {
 }
 function createBoard() {
   let tempGameBoard = createElWithId('main', '#game-board');
-  
+
   let id = 0;
   let colCount = 4;
   let rowCount = 4;
