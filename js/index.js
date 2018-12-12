@@ -13,16 +13,17 @@ console.error('NEED TO USE GAME.UPDATE ONLY TO UPDATE GAME');
 
 function render(event) {
   let targetOfClue = event.target.dataset.id;
-  let targetOfAnswer = event.target.closest('.answerContainer');
+  let targetOfAnswer = event.target.closest('.question');
   const isRoundOneOrTwo = targetOfClue && game.round < 3;
 
   if (isRoundOneOrTwo && game.canClickClue) {
+    $("#game-board").hide();
     showAnswerOrWager(targetOfClue);
   }
 
   if (targetOfAnswer) {
-    let clueId = event.target.closest('.clue').dataset.id;
-
+    let clueId = event.target.id;
+    console.log(clueId);
     game.update(clueId, event.target.innerText);
     clearPlayerArea();
     updateBoard();
@@ -31,11 +32,14 @@ function render(event) {
 }
 
 function showAnswerOrWager(clueId) {
+  let clueBox = buildClueBox(clueId);
+
   game.canClickClue = false;
   if (game.data[clueId] instanceof Wager) {
+
     showWager(clueId);
   } else {
-    showAnswers(clueId);
+    showAnswers(clueBox, clueId);
   }
 }
 
@@ -43,18 +47,22 @@ function showWager(clueId) {
   let posValues = [5, 10, 100, 1000];
   let negValues = [-5, -10, -100, -1000];
 
-  let clueContainer = document.querySelector(`.clue[data-id="${clueId}"]`);
+  let clueContainer = document.querySelector(`.question`);
 
   clueContainer.innerHTML = '';
   clueContainer.append(createWagerArea(posValues, negValues));
 
   $("#wager-amount").on("click", () => {
     clueContainer.innerHTML = '';
-    showAnswers(clueId)
+    
+    showAnswers(buildClueBox(clueId), clueId);
   });
 
+  
   [...document.querySelectorAll('.number')].forEach((wagerNum) => {
+    
     wagerNum.addEventListener('click', (e) => {
+
       const selectedAmt = parseInt(e.target.innerText);
       const submitAmount = parseInt($("#wager-amount").text());
 
@@ -62,6 +70,17 @@ function showWager(clueId) {
       game.data[clueId].value = submitAmount + selectedAmt;
     })
   })
+}
+function buildClueBox(clueId) {
+  let clueBox;
+  let clue = game.data[clueId];
+  clueBox = createElWithClass('div', `.question`);
+  clueBox.append(createElWithClass('h3', '.question', clue.category));
+  clueBox.append(createElWithClass('h3', '.question', clue.value));
+  clueBox.append(createElWithClass('h3', '.question', clue.question));
+
+  $("#view").append(clueBox);
+  return clueBox;
 }
 
 function createWagerArea(positives, negatives) {
@@ -126,11 +145,22 @@ function showAnswers(clueId) {
 
   answerContainer = createElWithClass('div', '.answerContainer');
   answersArr.forEach(answer => {
-    answerContainer.append(createElWithClass('div', '.answer', answer));
+    let answerBox = createElWithId('div', `#${clueId}`, answer)
+    answerBox.classList.add('answer');
+    answerContainer.append(answerBox);
   });
 
-  clue.append(answerContainer);
-  clue.append(createElWithClass('button', '.contBtn', 'Continue'));
+  clueBox.append(answerContainer);
+  clueBox.append(createElWithClass('button', '.contBtn', 'Continue'));
+
+  [...document.querySelectorAll('.answer')].forEach((elem) => {
+    elem.addEventListener('click', (event) => {
+  
+      $(".question").remove();
+      $("#game-board").show();
+      render(event)
+    })
+  })
 }
 
 function updateBoard() {
