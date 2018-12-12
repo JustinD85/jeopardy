@@ -19,16 +19,16 @@ if (typeof module === 'undefined') {
   $("#start-btn").on("click", transitionToGame);
 }
 
-
 function render(event) {
   let targetOfClue = event.target.dataset.id;
-  let targetOfAnswer = event.target.closest('.answerContainer')
-
+  let targetOfAnswer = event.target.closest('.question')
+  
   if (targetOfClue) {
+    $("#game-board").hide();
     showAnswerOrWager(targetOfClue);
   }
   if (targetOfAnswer) {
-    let clueId = event.target.closest('.clue').dataset.id;
+    let clueId = event.target.id;
     
     game.update(clueId, event.target.innerText);
     clearPlayerArea();
@@ -37,10 +37,12 @@ function render(event) {
 }
 
 function showAnswerOrWager(clueId) {
+  let clueBox = buildClueBox(clueId);
+
   if (game.data[clueId] instanceof Wager) {
-    showWager(clueId);
+    showWager(clueBox, clueId);
   } else {
-    showAnswers(clueId);
+    showAnswers(clueBox, clueId);
   }
 }
 
@@ -48,14 +50,15 @@ function showWager(clueId) {
   let posValues = [5, 10, 100, 1000];
   let negValues = [-5, -10, -100, -1000];
 
-  let clueContainer = document.querySelector(`.clue[data-id="${clueId}"]`);
+  let clueContainer = document.querySelector(`.question`);
 
   clueContainer.innerHTML = '';
   clueContainer.append(createWagerArea(posValues, negValues));
   
   $("#wager-amount").on("click", () => {
     clueContainer.innerHTML = '';
-    showAnswers(clueId)
+    
+    showAnswers(buildClueBox(clueId), clueId);
   });
 
   [...document.querySelectorAll('.number')].forEach((wagerNum) => {
@@ -67,6 +70,17 @@ function showWager(clueId) {
       game.data[clueId].value = submitAmount + selectedAmt;
     })
   })
+}
+function buildClueBox(clueId) {
+  let clueBox;
+  let clue = game.data[clueId];
+  clueBox = createElWithClass('div', `.question`);
+  clueBox.append(createElWithClass('h3', '.question', clue.category));
+  clueBox.append(createElWithClass('h3', '.question', clue.value));
+  clueBox.append(createElWithClass('h3', '.question', clue.question));
+
+  $("#view").append(clueBox);
+  return clueBox;
 }
 
 function createWagerArea(positives, negatives) {
@@ -102,30 +116,35 @@ function buildWagerValueBox(element, arr) {
   return element;
 }
 
-function showAnswers(clueId) {
-  let clue = $(`.clue[data-id="${clueId}"]`);
+function showAnswers(clueBox, clueId) {
   let answerContainer;
   let correctAnswer = game.data[clueId].answer;
-  let answersArr = [correctAnswer, 'wrong', 'wrong', 'wrong'];
-
-  // will need this when questions are full screen
-  // let cat = game.data[clueId].category;
-  // $(`.clue[data-id="${clueId}"]`).html(game.data[clueId].question);
+  let answersArr = [correctAnswer, 'yo', 'sup', 'foo'];
   
   answerContainer = createElWithClass('div', '.answerContainer');
-  answersArr.forEach(answer => { 
-    answerContainer.append(createElWithClass('div', '.answer', answer));
+  answersArr.forEach(answer => {
+    let answerBox = createElWithId('div', `#${clueId}`, answer)
+    answerBox.classList.add('answer');
+    answerContainer.append(answerBox);
   });
 
-  clue.append(answerContainer);
-  clue.append(createElWithClass('button', '.contBtn', 'Continue'));
+  clueBox.append(answerContainer);
+  clueBox.append(createElWithClass('button', '.contBtn', 'Continue'));
+
+  [...document.querySelectorAll('.answer')].forEach((elem) => {
+    elem.addEventListener('click', (event) => {
+  
+      $(".question").remove();
+      $("#game-board").show();
+      render(event)
+    })
+  })
 }
 
 function updateBoard() {
   if ($("#game-board")) $("#game-board").remove();
 
   $("#view").append(game.board.createBoard());
-  console.error('add click event to clue not board')
   $("#game-board").on("click", render);
 }
 
