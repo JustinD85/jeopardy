@@ -13,7 +13,7 @@ console.error('NEED TO USE GAME.UPDATE ONLY TO UPDATE GAME');
 
 function render(event) {
   let targetOfClue = event.target.dataset.id;
-  let targetOfAnswer = event.target.closest('.answerContainer')
+  let targetOfAnswer = event.target.closest('.answerContainer');
   const isRoundOneOrTwo = targetOfClue && game.round < 3;
 
   if (isRoundOneOrTwo && game.canClickClue) {
@@ -22,13 +22,10 @@ function render(event) {
 
   if (targetOfAnswer) {
     let clueId = event.target.closest('.clue').dataset.id;
-    console.log(clueId)
+
     game.update(clueId, event.target.innerText);
-    // document.querySelector(`.clue[data-id="${clueId}"]`).innerHTML = '';
     clearPlayerArea();
     updateBoard();
-    // game.data[clueId].available = false;
-    console.log('anser')
     updatePlayers($("#player-area"));
   }
 }
@@ -123,7 +120,6 @@ function updateBoard() {
   if ($("#game-board")) $("#game-board").remove();
 
   $("#view").append(createBoard());
-  console.error('add click event to clue not board')
   $("#game-board").on("click", render);
 }
 function createBoard() {
