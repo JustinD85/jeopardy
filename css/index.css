@@ -111,7 +111,12 @@ body {
     whitesmoke 0 0px 10px 1px inset,
     whitesmoke 0 0px 10px 1px;
 }
-
+#current-player::before{
+  content:'↝'
+}
+#current-player::after{
+  content:'↜'
+}
 .cloud-1 {
   position: absolute;
   animation: 85s infinite cloudsForward;
@@ -263,9 +268,20 @@ input {
 } */
 
 .number {
-  
   padding:10px;
 } 
+.results{
+  width: 50%;
+  display: block;
+}
 #wager-amount{
   margin: 0 20px;
 }
+#winner{
+  font-size:5rem;
+  color:crimson;
+  margin:  0 auto;
+}
+/* #winner::after{
+  content:' is the WINNER!!🥳'
+} */

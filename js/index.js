@@ -31,8 +31,12 @@ function render(event) {
     showFinalRound();
   }
 }
+function changeGameMessage(msg) {
+  $('#info').text(msg);
+}
 
 function showFinalRound() {
+  changeGameMessage(`Final Round! ${game.players[0].name} choose your wager!`)
   let view = document.querySelector(`#view`);
   $("#player-area").hide();
   $(".question").hide();
@@ -42,6 +46,7 @@ function showFinalRound() {
 
   $("#wager-amount").on("click", () => {
     if (!game.players[1].finalWager) {
+      changeGameMessage(`Great! Now it's ${game.players[1].name}'s turn to choose!`)
       game.rotateCurrentPlayer();
     } else {
       game.rotateCurrentPlayer();
@@ -70,6 +75,7 @@ function showAnswerOrWager(clueId) {
 
   game.canClickClue = false;
   if (game.dataManager.data[clueId] instanceof Wager) {
+    changeGameMessage(`Press a Positive or Negative number to Change your wager!`)
     showWager(clueId);
   } else {
     showAnswers(clueBox, clueId);
@@ -157,15 +163,17 @@ function buildWagerValueBox(element, wagerValues) {
 }
 
 function showAnswers(clueBox, clueId) {
+  changeGameMessage(` ${game.players[0].name}, please choose an answer!
+  `)
   $(".wager-container").remove();
-
+  
   let answerContainer;
   let correctAnswer = game.dataManager.data[clueId].answer;
   let answers = game.getAllCluesByCategoryId(game.dataManager.data[clueId].categoryId, clueId);
   answers.push(correctAnswer);
   answers = game.dataManager.randomizeArray(answers);
   answers = answers.map(answer => answer);
-
+  
   answerContainer = createElWithClass('div', '.answer-container');
   answers.forEach(answer => {
     let answerBox = createElWithId('div', `#${clueId}`, answer)
@@ -176,29 +184,38 @@ function showAnswers(clueBox, clueId) {
   clueBox.append(answerContainer);
   clueBox.append(createElWithClass('button', '.cont-btn', 'Continue'));
   $('.contBtn').hide();
-
+  
   [...document.querySelectorAll('.answer')].forEach((elem) => {
     elem.addEventListener('click', (event) => {
-
+      
       if (game.round < 3) {
         $(".question").remove();
         $("#game-board").show();
         render(event)
       } else {
+        
         let playerGuess = event.target.innerText
         let isCorrectGuess = game.checkAnswer(clueId, playerGuess);
         game.updateFinalWager(isCorrectGuess);
         if (game.finalContestants < 2) {
           game.rotateCurrentPlayer();
+          changeGameMessage(` ${game.players[0].name}, please choose an answer!`);
           game.finalContestants++;
         } else {
           $(".question-container").remove();
           let resultList = game.determineWinner();
-
+          changeGameMessage(``);
+          
           let resultsContainer = createElWithId('div', '#results')
-          resultList.forEach(player => {
-            let tempEl = createElWithClass('span', '.results', `${player.name} $${player.finalWager}`);
-            resultsContainer.append(tempEl);
+          resultList.forEach((player, i) => {
+            let playerForResults;
+            if (i === 0) {
+              playerForResults = createElWithClass('span', '.results', `${player.name} won with $${player.finalWager}!`);
+              playerForResults.id = 'winner'
+            } else {
+              playerForResults = createElWithClass('span', '.results', `Good try ${player.name} with $${player.finalWager}`);
+            }
+            resultsContainer.append(playerForResults);
           })
 
           $("#view").append(resultsContainer);
@@ -262,7 +279,10 @@ function updatePlayers(playerArea) {
     let { name, score } = player;
     let playerCard = `${name} score: ${score}`;
     let user = createElWithClass('article', `.player-${i}`, playerCard);
-    if (i == 0) user.id = 'current-player';
+    if (i == 0) {
+      user.id = 'current-player'
+      $('#info').text(`It's Currently ${name}'s Turn!`)
+    }
     playerArea.append(user);
   });
 }
