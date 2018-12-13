@@ -67,7 +67,7 @@ class DataManager {
     this.data = this.getCluesForBoard(randomCategoriesKeys).reduce((acc, clue, clueIdForDOM) => {
       let currentCategory = flippedTuringCategories[clue.categoryId];
       let clueOptions = {
-        question: clue.question,
+        question: this.parseQuestion(clue.question),
         answer: clue.answer,
         pointValue: clue.pointValue,
         categoryId: clue.categoryId,
@@ -88,6 +88,18 @@ class DataManager {
       
       return acc;
     }, []);
+  }
+  
+  parseQuestion(string) {
+    if (string.includes(`(`)) {
+      let str = string.split('(');
+      str.shift();
+      str = str.join('')
+      let newStr = str.split(')')
+      newStr.shift();
+
+      return newStr.join('');
+    }
   }
 
   parseTitle(str) {
