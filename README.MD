@@ -27,7 +27,7 @@ Welcome to our three player recreation of the classic trivia game Jeopardy. Join
 * Pull from a Jeopardy API
 
 
-## Setup
+## Developer Setup
 
 Clone down the repository - `git clone git@github.com:JustinD85/jeopardy.git`
 
