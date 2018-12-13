@@ -11,7 +11,7 @@ const domMethods = {
 
 function render(event) {
   let targetOfClue = event.target.parentElement.dataset.id;
-  let targetOfAnswer = event.target.closest('.question');
+  let targetOfAnswer = event.target.closest('.answer-container');
   const isRoundOneOrTwo = targetOfClue && game.round < 3;
 
   if (isRoundOneOrTwo && game.canClickClue) {
@@ -33,13 +33,12 @@ function render(event) {
 }
 
 function showFinalRound() {
-  let posValues = [5, 10, 100, 1000];
-  let negValues = [-5, -10, -100, -1000];
-
   let view = document.querySelector(`#view`);
-
+  $("#player-area").hide();
   $(".question").hide();
-  view.append(createWagerArea(posValues, negValues));
+  $("#game-board").hide();
+  
+  view.append(createWagerArea());
 
   $("#wager-amount").on("click", () => {
     if (!game.players[1].finalWager) {
@@ -49,15 +48,19 @@ function showFinalRound() {
       showAnswers(buildClueBox(32), 32);
     }
   });
-
   [...document.querySelectorAll('.number')].forEach((wagerNum) => {
     wagerNum.addEventListener('click', (e) => {
-
       const selectedAmt = parseInt(e.target.innerText);
       const submitAmount = parseInt($("#wager-amount").text());
-
-      $("#wager-amount").text(submitAmount + selectedAmt);
-      game.players[0].finalWager = submitAmount + selectedAmt;
+      const desiredAMount = submitAmount + selectedAmt;
+      const currentMax = parseInt(document.querySelector('.wager-max').innerText);
+      if (desiredAMount < currentMax) {
+        $("#wager-amount").text(submitAmount + selectedAmt);
+        game.players[0].finalWager = submitAmount + selectedAmt;
+      } else {
+        $("#wager-amount").text(currentMax);
+        game.players[0].finalWager = currentMax;
+      }
     })
   })
 }
@@ -74,13 +77,11 @@ function showAnswerOrWager(clueId) {
 }
 
 function showWager(clueId) {
-  let posValues = [5, 10, 100, 1000];
-  let negValues = [-5, -10, -100, -1000];
 
   let view = document.querySelector(`#view`);
 
-  $(".question").hide();
-  view.append(createWagerArea(posValues, negValues));
+  $(".question-container").hide();
+  view.append(createWagerArea(clueId));
 
   $("#wager-amount").on("click", () => {
     showAnswers(buildClueBox(clueId), clueId);
@@ -88,12 +89,17 @@ function showWager(clueId) {
 
   [...document.querySelectorAll('.number')].forEach((wagerNum) => {
     wagerNum.addEventListener('click', (e) => {
-
       const selectedAmt = parseInt(e.target.innerText);
       const submitAmount = parseInt($("#wager-amount").text());
-
-      $("#wager-amount").text(submitAmount + selectedAmt);
-      game.dataManager.data[clueId].value = submitAmount + selectedAmt;
+      const desiredAMount = submitAmount + selectedAmt;
+      const currentMax = parseInt(document.querySelector('.wager-max').innerText);
+      if (desiredAMount < currentMax) {
+        $("#wager-amount").text(submitAmount + selectedAmt);
+        game.dataManager.data[clueId].value = submitAmount + selectedAmt;
+      } else {
+        $("#wager-amount").text(currentMax);
+        game.dataManager.data[clueId].value = currentMax;
+      }
     })
   })
 }
@@ -101,21 +107,27 @@ function showWager(clueId) {
 function buildClueBox(clueId) {
   let clueBox;
   let clue = game.dataManager.data[clueId];
-  clueBox = createElWithClass('div', `.question`);
-  clueBox.append(createElWithClass('h3', '.question', clue.category));
-  clueBox.append(createElWithClass('h3', '.question', clue.value));
+  clueBox = createElWithClass('div', `.question-container`);
+  clueBox.append(createElWithClass('h3', '.category', clue.category));
+  clueBox.append(createElWithClass('h3', '.point-value', clue.value));
   clueBox.append(createElWithClass('h3', '.question', clue.question));
 
   $("#view").append(clueBox);
   return clueBox;
 }
 
-function createWagerArea(positives, negatives) {
+function createWagerArea(clueId = 32) {
+  let positives = [5, 10, 100, 1000];
+  let negatives = [-5, -10, -100, -1000];
+  let cluePointValue = game.dataManager.data[clueId].value;
   let wagerContainer;
   let tempElement;
+  let maxValue = game.players[0].score;
 
-  wagerContainer = createElWithClass('div', '.wager');
-  wagerContainer.append(createElWithClass('h1', '.wager', 'Wager'));
+  if (cluePointValue > maxValue) maxValue = cluePointValue;
+
+  wagerContainer = createElWithClass('div', '.wager-container');
+  wagerContainer.append(createElWithClass('h1', '.wager-title', 'Wager'));
 
   tempElement = createElWithClass('section', '.ans-pos-box');
   wagerContainer.append(buildWagerValueBox(tempElement, positives));
@@ -124,27 +136,28 @@ function createWagerArea(positives, negatives) {
   wagerContainer.append(buildWagerValueBox(tempElement, negatives));
 
   tempElement = createElWithClass('section', '.range-submit');
-  tempElement.append(createElWithClass('span', '.wager-range', 'min: 5'));
+  tempElement.append(createElWithClass('span', '.wager-min', '5'));
   wagerContainer.append(tempElement);
 
   tempElement.append(createElWithId('button', '#wager-amount', '0'));
   wagerContainer.append(tempElement);
 
-  tempElement.append(createElWithClass('span', '.wager-range', 'max: 9999'));
+  if (maxValue <= 0) { maxValue = 5 };
+  tempElement.append(createElWithClass('span', '.wager-max', `${maxValue}`));
   wagerContainer.append(tempElement);
 
   return wagerContainer;
 }
 
-function buildWagerValueBox(element, arr) {
-  arr.forEach((value) => {
+function buildWagerValueBox(element, wagerValues) {
+  wagerValues.forEach((value) => {
     element.append(createElWithClass('span', '.number', value));
   });
   return element;
 }
 
 function showAnswers(clueBox, clueId) {
-  $(".wager").remove();
+  $(".wager-container").remove();
 
   let answerContainer;
   let correctAnswer = game.dataManager.data[clueId].answer;
@@ -153,7 +166,7 @@ function showAnswers(clueBox, clueId) {
   answers = game.dataManager.randomizeArray(answers);
   answers = answers.map(answer => answer);
 
-  answerContainer = createElWithClass('div', '.answerContainer');
+  answerContainer = createElWithClass('div', '.answer-container');
   answers.forEach(answer => {
     let answerBox = createElWithId('div', `#${clueId}`, answer)
     answerBox.classList.add('answer');
@@ -161,7 +174,7 @@ function showAnswers(clueBox, clueId) {
   });
 
   clueBox.append(answerContainer);
-  clueBox.append(createElWithClass('button', '.contBtn', 'Continue'));
+  clueBox.append(createElWithClass('button', '.cont-btn', 'Continue'));
   $('.contBtn').hide();
 
   [...document.querySelectorAll('.answer')].forEach((elem) => {
@@ -179,7 +192,7 @@ function showAnswers(clueBox, clueId) {
           game.rotateCurrentPlayer();
           game.finalContestants++;
         } else {
-          $(".question").remove();
+          $(".question-container").remove();
           let resultList = game.determineWinner();
 
           let resultsContainer = createElWithId('div', '#results')

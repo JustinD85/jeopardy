@@ -20,6 +20,60 @@ body {
   justify-content: space-around;
 }
 
+.question:nth-child(1),
+.question:nth-child(2){
+
+}
+.question-container{
+  
+}
+
+.wager-title{
+  margin-top:0;
+}
+.question-container,
+.wager-container{
+  box-shadow:
+  whitesmoke 0 0px 10px 1px inset,
+  whitesmoke 0 0px 10px 1px;
+  min-width: 50%;
+  margin:auto;
+  text-align: center;
+  color:whitesmoke;
+  background:#123652;
+  border-radius: 90px;
+  padding:10px;
+}
+.wager-max::before{
+  content:'Max:';
+}
+.ans-neg-box{
+  margin-bottom: 30px;
+}
+
+#wager-amount{
+  border-radius: 10px;
+  color:crimson;
+  width:50px;
+}
+.wager-min::before{
+  content: 'Min:';
+}
+
+
+.answer{
+  background:crimson;
+  /* height:3rem; */
+  padding:1rem;
+  margin:7px;
+  display: inline-block;
+  box-shadow:
+  whitesmoke 0 0px 10px 1px inset,
+  whitesmoke 0 0px 10px 1px;
+  /* border:whitesmoke solid 1px; */
+  text-align: center;
+  width:45%;
+}
 #quit {
   border-radius: 50%;
   padding: 30px;
@@ -31,11 +85,13 @@ body {
 
 #start-btn {
   position: absolute;
+  color:crimson;
   border-radius: 5px;
   height: 75px;
   width: 100px;
   bottom: 10%;
   right: 10%;
+  animation: infinite 1400ms breath;
 }
 
 #player-area {
@@ -58,14 +114,15 @@ body {
 
 .cloud-1 {
   position: absolute;
-  animation: 15s infinite cloudsForward;
+  animation: 85s infinite cloudsForward;
+  top:0;
   left: 0px;
   z-index: -1;
 }
 
 .cloud-2 {
   position: absolute;
-  animation: 25s infinite cloudsReverse;
+  animation: 55s infinite cloudsReverse;
   right: 0px;
   top: 200px;
   z-index: -2;
@@ -73,8 +130,8 @@ body {
 
 .cloud-3 {
   position: absolute;
-  animation: 25s infinite cloudsForward;
-  left: 200px;
+  animation: 65s infinite cloudsForward;
+  left: 400px;
   top: 300px;
   z-index: -1;
 }
@@ -119,14 +176,15 @@ body {
   }
 }
 
-#title {
-  font-size: 9rem;
+#title span {
+  font-size: 4rem;
 }
 
-#title span:nth-child(1) {
-  position: absolute;
-  top: 100px;
-  color: blue;
+#title span {
+  position: relative;
+  left: 100px;
+  color: crimson; 
+  margin:10px;
 }
 
 .profile-picture {
@@ -158,6 +216,7 @@ input {
   }
 
   50% {
+    height:1.95rem;
     color: purple;
   }
 }
@@ -197,12 +256,16 @@ input {
   height: 4rem;
 }
 
-.wager section {
+/* .wager section {
   display: flex;
   justify-content: space-around;
   margin: 2px;
-}
+} */
 
 .number {
-  background: lightgoldenrodyellow;
+  
+  padding:10px;
+} 
+#wager-amount{
+  margin: 0 20px;
 }
