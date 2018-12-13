@@ -1,9 +1,12 @@
 const domMethods = {
+  addTextOrHTML,
   buildClueBox,
   updatePlayers,
   changeGameMessage,
   clearScreen,
   createBoard,
+  createElWithClass,
+  createElWithId,
   createPlayerArea,
   createQuitButton,
   createWagerArea,
@@ -86,7 +89,8 @@ function showAnswerOrWager(clueId) {
   let clueBox = buildClueBox(clueId);
 
   game.canClickClue = false;
-  if (game.dataManager.data[clueId] instanceof Wager) {
+  let clickedClueID = game.dataManager.data[clueId];
+  if (clickedClueID instanceof Wager) {
     changeGameMessage(`Press a Positive or Negative number to Change your wager!`)
     showWager(clueId);
   } else {
@@ -145,7 +149,9 @@ function createWagerArea(clueId = 32) {
   let tempElement;
   let maxValue = game.players[0].score;
 
-  if (cluePointValue > maxValue) maxValue = cluePointValue;
+  if (cluePointValue > maxValue) {
+    maxValue = cluePointValue;
+  }
 
   wagerContainer = createElWithClass('div', '.wager-container');
   wagerContainer.append(createElWithClass('h1', '.wager-title', 'Wager'));
@@ -163,7 +169,9 @@ function createWagerArea(clueId = 32) {
   tempElement.append(createElWithId('button', '#wager-amount', '0'));
   wagerContainer.append(tempElement);
 
-  if (maxValue <= 0) { maxValue = 5 };
+  if (maxValue <= 0) {
+    maxValue = 5;
+  }
   tempElement.append(createElWithClass('span', '.wager-max', `${maxValue}`));
   wagerContainer.append(tempElement);
 
@@ -226,10 +234,12 @@ function showAnswers(clueBox, clueId) {
           resultList.forEach((player, i) => {
             let playerForResults;
             if (i === 0) {
-              playerForResults = createElWithClass('span', '.results', `${player.name} won with $${player.finalWager}!`);
+              let winText = `${player.name} won with $${player.finalWager}!`;
+              playerForResults = createElWithClass('span', '.results', winText);
               playerForResults.id = 'winner'
             } else {
-              playerForResults = createElWithClass('span', '.results', `Good try ${player.name} with $${player.finalWager}`);
+              let consolation = `Good try ${player.name} with $${player.finalWager}`;
+              playerForResults = createElWithClass('span', '.results', consolation);
             }
             resultsContainer.append(playerForResults);
           })
@@ -323,12 +333,44 @@ function clearScreen() {
   $("#view").html("");
 }
 
+function createElWithId(ele, elName, elText, htmlText) {
+
+  let tempElement = document.createElement(ele);
+  elName = elName.substr(1);
+
+  tempElement.id = elName;
+
+  return addTextOrHTML(tempElement, elText, htmlText);
+}
+
+function createElWithClass(ele, elName, elText, htmlText) {
+
+  let tempElement = document.createElement(ele);
+  elName = elName.substr(1);
+
+  tempElement.classList.add(elName);
+
+  return addTextOrHTML(tempElement, elText, htmlText);
+}
+
+function addTextOrHTML(tempElement, elText, htmlText) {
+
+  if (elText && elText !== undefined && elText !== '') {
+    tempElement.innerText = elText;
+  }
+  if (htmlText && htmlText !== undefined && htmlText !== '') {
+    tempElement.innerHTML = htmlText;
+  }
+  return tempElement;
+}
+
 function transitionToGame() {
   const playerNames = $('.player-name-input').toArray().map(player => {
     return player.value;
   });
   // transition img below
-  $("#view").html(`<img  id="loading-screen" src="https://media.giphy.com/media/qsNbIXpcFJ9Li/giphy.gif">`);
+  let imgSrc = 'https://media.giphy.com/media/qsNbIXpcFJ9Li/giphy.gif';
+  $("#view").html(`<img  id="loading-screen" src="${imgSrc}">`);
 
   // timeout is to display the transition screen
   window.setTimeout(() => {
