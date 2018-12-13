@@ -2,38 +2,40 @@
 * {
   box-sizing: border-box;
   font-family: 'Amatic SC', cursive;
-  margin:0;
-  padding:0;
+  margin: 0;
+  padding: 0;
   font-weight: bolder;
-  font-size:1.3rem;
+  font-size: 1.3rem;
 }
 
 body {
   height: 100vh;
   background: #0099e0;
 }
-#view{
-  height:95%;
+
+#view {
+  height: 95%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
 }
 
-#quit{
+#quit {
   border-radius: 50%;
-  padding:30px;
+  padding: 30px;
   position: absolute;
-  bottom:-15px;
-  right:-15px;
-  background:crimson;
+  bottom: -15px;
+  right: -15px;
+  background: crimson;
 }
-#start-btn{
+
+#start-btn {
   position: absolute;
   border-radius: 5px;
-  height:75px;
-  width:100px;
-  bottom:10%;
-  right:10%;
+  height: 75px;
+  width: 100px;
+  bottom: 10%;
+  right: 10%;
 }
 
 #player-area {
@@ -48,65 +50,72 @@ body {
 #current-player {
   color: white;
   border-radius: 10px;
-  padding:10px;
-  box-shadow: 
-  whitesmoke 0 0px 10px 1px inset,
-  whitesmoke 0 0px 10px 1px;
+  padding: 10px;
+  box-shadow:
+    whitesmoke 0 0px 10px 1px inset,
+    whitesmoke 0 0px 10px 1px;
 }
 
-.cloud-1{
+.cloud-1 {
   position: absolute;
-  animation: 15s  infinite cloudsForward;
-  left:0px;
+  animation: 15s infinite cloudsForward;
+  left: 0px;
   z-index: -1;
 }
 
-.cloud-2{
+.cloud-2 {
   position: absolute;
-  animation: 25s  infinite cloudsReverse;
-  right:0px;
-  top:200px;
+  animation: 25s infinite cloudsReverse;
+  right: 0px;
+  top: 200px;
   z-index: -2;
 }
 
-.cloud-3{
+.cloud-3 {
   position: absolute;
-  animation: 25s  infinite cloudsForward;
-  left:200px;
-  top:300px;
+  animation: 25s infinite cloudsForward;
+  left: 200px;
+  top: 300px;
   z-index: -1;
 }
 
-@keyframes cloudsForward{
-  0%,100%{
-  }
-  50%{
-    left:calc(100vw);
+@keyframes cloudsForward {
+
+  0%,
+  100% {}
+
+  50% {
+    left: calc(100vw);
   }
 }
 
-@keyframes cloudsReverse{
-  0%,100%{
-  }
-  50%{
-    right:calc(100vw);
+@keyframes cloudsReverse {
+
+  0%,
+  100% {}
+
+  50% {
+    right: calc(100vw);
   }
 }
 
-.birds{
+.birds {
   position: absolute;
   z-index: -1;
-  animation:  3s infinite fly;
+  animation: 3s infinite fly;
 }
 
-@keyframes fly{
-  0%,100%{
-    left:40%;
-    top:30%;
+@keyframes fly {
+
+  0%,
+  100% {
+    left: 40%;
+    top: 30%;
   }
-  50%{
-    left:30%;
-    top:20%;
+
+  50% {
+    left: 30%;
+    top: 20%;
   }
 }
 
@@ -114,10 +123,10 @@ body {
   font-size: 9rem;
 }
 
-#title span:nth-child(1){
+#title span:nth-child(1) {
   position: absolute;
-  top:100px;
-  color:blue;
+  top: 100px;
+  color: blue;
 }
 
 .profile-picture {
@@ -147,6 +156,7 @@ input {
   100% {
     color: lightblue;
   }
+
   50% {
     color: purple;
   }
@@ -154,8 +164,8 @@ input {
 
 
 
-#loading-screen{
-  height:100vh;
+#loading-screen {
+  height: 100vh;
   object-fit: cover;
 }
 
@@ -164,7 +174,7 @@ input {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   width: 80%;
-  margin:auto;
+  margin: auto;
 }
 
 .clue {
@@ -173,17 +183,18 @@ input {
   min-height: 3rem;
   height: auto;
   border-radius: 5px;
-  padding:5% 2%;
+  padding: 5% 2%;
   margin: 9% 1%;
   background-color: #123652;
   border: 1px solid whitesmoke;
-  color:whitesmoke;
+  color: whitesmoke;
 }
-.clue:nth-child(1){
-  background:crimson;
+
+.clue:nth-child(1) {
+  background: crimson;
   line-height: -5px;
   /* color:crimson; */
-  height:4rem;
+  height: 4rem;
 }
 
 .wager section {
