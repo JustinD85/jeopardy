@@ -310,7 +310,7 @@ function updatePlayers(playerArea) {
     profilePhoto.src = photos[i];
     user.prepend(profilePhoto);
 
-    if (i == 0) {
+    if (i === 0) {
       user.id = 'current-player';
       $('#info').text(`It's Currently ${name}'s Turn!`);
     }
