@@ -20,9 +20,10 @@ Welcome to our three player recreation of the classic trivia game Jeopardy. Join
 
 ## Next Steps
 
-* Add Difficulty Levels for AI players
-* Refactor Wheel Generation and Puzzle Generation functions
-* Add additional visual elements like a speen wheel animation
+* Add AI so that 1-3 players can player at a time
+* Add avatars for players to choose from
+* Include a time feature
+
 
 ## Setup
 
