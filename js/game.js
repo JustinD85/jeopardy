@@ -72,6 +72,7 @@ class Game {
         }
       }
       if (!cluesAvailable || shouldIncrement) {
+        
         this.round++;
       }
     }
