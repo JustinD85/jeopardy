@@ -226,8 +226,6 @@ input {
   }
 }
 
-
-
 #loading-screen {
   height: 100vh;
   object-fit: cover;
@@ -257,15 +255,8 @@ input {
 .clue:nth-child(1) {
   background: crimson;
   line-height: -5px;
-  /* color:crimson; */
   height: 4rem;
 }
-
-/* .wager section {
-  display: flex;
-  justify-content: space-around;
-  margin: 2px;
-} */
 
 .number {
   padding:10px;
@@ -277,11 +268,9 @@ input {
 #wager-amount{
   margin: 0 20px;
 }
+
 #winner{
   font-size:5rem;
   color:crimson;
   margin:  0 auto;
 }
-/* #winner::after{
-  content:' is the WINNER!!🥳'
-} */
