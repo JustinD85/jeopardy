@@ -316,4 +316,3 @@ if (typeof module !== 'undefined') {
 } else {
   $("#start-btn").on("click", transitionToGame);
 }
-$("#start-btn").click();
