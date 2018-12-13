@@ -301,13 +301,20 @@ function createPlayerArea() {
 }
 
 function updatePlayers(playerArea) {
+
   game.players.forEach((player, i) => {
     let { name, score } = player;
     let playerCard = `${name} score: ${score}`;
+    let profilePhoto = createElWithClass('img', '.in-game-profile-picture', '');
     let user = createElWithClass('article', `.player-${i}`, playerCard);
+    let photos = game.dataManager.imgs;
+    
+    profilePhoto.src = photos[i];
+    user.prepend(profilePhoto);
+
     if (i == 0) {
-      user.id = 'current-player'
-      $('#info').text(`It's Currently ${name}'s Turn!`)
+      user.id = 'current-player';
+      $('#info').text(`It's Currently ${name}'s Turn!`);
     }
     playerArea.append(user);
   });

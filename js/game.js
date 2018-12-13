@@ -52,6 +52,9 @@ class Game {
   }
 
   rotateCurrentPlayer() {
+    let profilePhotos = this.dataManager.imgs;
+
+    profilePhotos.push(profilePhotos.shift())
     this.players.push(this.players.shift());
   }
 

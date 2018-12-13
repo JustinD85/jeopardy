@@ -3,6 +3,11 @@ class DataManager {
     this.sourceData = data;
     this.data = [];
     this.formatData();
+    this.imgs = [
+      "./img/zebra-face.png",
+      "./img/cat-face.png",
+      "./img/pig-face.png"
+    ]
   }
 
   flipDataSetValues(object) {
