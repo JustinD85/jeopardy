@@ -2,7 +2,7 @@
 
 Welcome to our three player recreation of the classic trivia game Jeopardy. Join a few friends and go head-to-head at answering all of the tough questions to help pad that bank account!
 
-![Jeopardy](image here)
+<img width="1438" alt="startscreen" src="https://user-images.githubusercontent.com/39391585/49949774-b1c6d880-feb3-11e8-92a8-8d56a68083bf.png">
  
 ## Background / About
 
@@ -11,6 +11,7 @@ Welcome to our three player recreation of the classic trivia game Jeopardy. Join
 ## See it Live
 
 [Jeopardy](https://justind85.github.io/jeopardy/) on Github Pages.
+
 
 ## Specs
 
@@ -39,4 +40,9 @@ From the root directory run `npm install`
 ## Original Assignment
 
 [Jeopardy](http://frontend.turing.io/projects/jeopardy.html) from the Turing School of Software & Design
-  
+
+## Screen Shots
+<img width="1438" alt="startscreen" src="https://user-images.githubusercontent.com/39391585/49949774-b1c6d880-feb3-11e8-92a8-8d56a68083bf.png">
+<img width="1438" alt="inprogress" src="https://user-images.githubusercontent.com/39391585/49949775-b1c6d880-feb3-11e8-9c28-eadf779d98e3.png">
+<img width="1440" alt="wager" src="https://user-images.githubusercontent.com/39391585/49949776-b1c6d880-feb3-11e8-9eb6-19e4fd2078ac.png">
+<img width="1439" alt="final" src="https://user-images.githubusercontent.com/39391585/49949777-b1c6d880-feb3-11e8-90d1-23cbf1f193d1.png">
