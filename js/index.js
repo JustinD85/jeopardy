@@ -1,12 +1,21 @@
 const domMethods = {
-  render,
-  showAnswers,
-  updateBoard,
+  buildClueBox,
+  updatePlayers,
+  changeGameMessage,
+  clearScreen,
+  createBoard,
   createPlayerArea,
   createQuitButton,
+  createWagerArea,
+  buildWagerValueBox,
+  render,
   resetGame,
-  clearScreen,
-  transitionToGame
+  showAnswerOrWager,
+  showAnswers,
+  showFinalRound,
+  showWager,
+  transitionToGame,
+  updateBoard
 }
 
 function render(event) {
@@ -31,13 +40,14 @@ function render(event) {
     showFinalRound();
   }
 }
+
 function changeGameMessage(msg) {
   $('#info').text(msg);
 }
 
 function showFinalRound() {
   changeGameMessage(`Final Round! ${game.players[0].name} choose your wager!`)
-  let view = document.querySelector(`#view`);
+  let view = $(`#view`);
   $("#player-area").hide();
   $(".question").hide();
   $("#game-board").hide();
@@ -58,7 +68,7 @@ function showFinalRound() {
       const selectedAmt = parseInt(e.target.innerText);
       const submitAmount = parseInt($("#wager-amount").text());
       const desiredAMount = submitAmount + selectedAmt;
-      const currentMax = parseInt(document.querySelector('.wager-max').innerText);
+      const currentMax = parseInt($('.wager-max').text());
       if (desiredAMount < currentMax) {
         $("#wager-amount").text(submitAmount + selectedAmt);
         game.players[0].finalWager = submitAmount + selectedAmt;
@@ -84,7 +94,7 @@ function showAnswerOrWager(clueId) {
 
 function showWager(clueId) {
 
-  let view = document.querySelector(`#view`);
+  let view = $(`#view`);
 
   $(".question-container").hide();
   view.append(createWagerArea(clueId));
@@ -98,7 +108,7 @@ function showWager(clueId) {
       const selectedAmt = parseInt(e.target.innerText);
       const submitAmount = parseInt($("#wager-amount").text());
       const desiredAMount = submitAmount + selectedAmt;
-      const currentMax = parseInt(document.querySelector('.wager-max').innerText);
+      const currentMax = parseInt($('.wager-max').text());
       if (desiredAMount < currentMax) {
         $("#wager-amount").text(submitAmount + selectedAmt);
         game.dataManager.data[clueId].value = submitAmount + selectedAmt;
