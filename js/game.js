@@ -1,19 +1,16 @@
 class Game {
   constructor(inPlayers) {
-    // Object.assign(this, {round, players, etc.})
     this.round = 1;
     this.players = inPlayers.map((name) => new Player(name));
     this.board = new Board();
     this.dataManager = new DataManager();
-    this.canClickClue = true;
+    this.clues = this.dataManager.formatData();
     this.finalContestants = 0;
   }
 
   update(clueId, playerGuess) {
     const isCorrect = this.checkAnswer(clueId, playerGuess);
-    this.dataManager.data[clueId].available = false;
-    // dont need this vvv
-    this.canClickClue = true;
+    this.clues[clueId].available = false;
     this.updatePlayerScore(isCorrect, clueId);
     this.rotateCurrentPlayer();
     this.updateRound();
@@ -22,7 +19,7 @@ class Game {
 
   getAllCluesByCategoryId(categoryId, clueId) {
     let matchingClues = this.dataManager.sourceData.clues.filter((clue) => clue.categoryId === categoryId);
-    let correctAnswer = this.dataManager.data[clueId].answer;
+    let correctAnswer = this.clues[clueId].answer;
 
     matchingClues = matchingClues.filter(clue => clue.answer !== correctAnswer);
     matchingClues = this.dataManager.randomizeArray(matchingClues);
@@ -31,25 +28,28 @@ class Game {
   }
 
   checkAnswer(clueId, playerGuess) {
-    const correctAnswer = this.dataManager.data[clueId].answer;
-
-    return playerGuess === correctAnswer;
-
+    return this.clues[clueId].isCorrect(playerGuess);
   }
-
+  
   updateFinalWager(shouldIncrement) {
     if (shouldIncrement) {
-      this.players[0].finalWager += this.players[0].score;
+      this.getCurrentPlayer().incrementFinalWager();
     } else {
-      this.players[0].finalWager -= this.players[0].score;
+      this.getCurrentPlayer().decrementFinalWager();
     }
   }
 
+  getCurrentPlayer() {
+    return this.players[0];
+  }
+
   updatePlayerScore(shouldIncrement, clueId) {
+    const pointValue = this.clues[clueId].value;
+
     if (shouldIncrement) {
-      this.players[0].score += this.dataManager.data[clueId].value;
+      this.getCurrentPlayer().incrementScore(pointValue);
     } else {
-      this.players[0].score -= this.dataManager.data[clueId].value;
+      this.getCurrentPlayer().decrementScore(pointValue);
     }
   }
 
@@ -73,7 +73,7 @@ class Game {
     let checkClueAvailability = (min, max, shouldIncrement) => {
       for (let i = min; i < max; i++) {
         if (!cluesAvailable) {
-          cluesAvailable = this.dataManager.data[i].available;
+          cluesAvailable = this.clues[i].available;
         }
       }
       if (!cluesAvailable || shouldIncrement) {

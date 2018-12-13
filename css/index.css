@@ -94,6 +94,21 @@ body {
   right: 10%;
   animation: infinite 1400ms breath;
 }
+.number:hover,
+.answer:hover,
+#quit,
+button:hover{
+  cursor: pointer;
+}
+
+.number:hover{
+  color:crimson;
+}
+#wager-amount:hover{
+  background: crimson;
+  color:whitesmoke;
+  border: 1px solid crimson;
+}
 
 #player-area {
   width: 100%;

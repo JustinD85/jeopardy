@@ -7,7 +7,13 @@ class Clue {
     this.category = category;
     this.categoryId = categoryId;
   }
+
+  isCorrect(playerGuess) {
+    return playerGuess === this.answer;
+  }
+  
 }
+
 
 if (typeof module !== 'undefined') {
   module.exports = Clue;

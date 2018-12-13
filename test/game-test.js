@@ -27,7 +27,6 @@ describe('Make a game', function () {
     expect(game.players.length).to.deep.equal(3);
     expect(game.board).to.deep.equal({});
     expect(game.dataManager).to.not.be.equal({});
-    expect(game.canClickClue).to.equal(true);
     expect(game.finalContestants).to.equal(0);
   });
 
@@ -40,16 +39,9 @@ describe('Make a game', function () {
 
   it('Should be able to have data', function () {
     
-    let clueAns =  game.dataManager.data[0].answer
+    let clueAns =  game.clues[0].answer
 
     expect(typeof clueAns).to.equal('string');
-  });
-
-  it('Should be able to verify clicking a clue', function () {
-
-    expect(game.canClickClue).to.equal(true);
-    game.canClickClue = false;
-    expect(game.canClickClue).to.equal(false);
   });
 
   it('Should be able to have tally final contestants', function () {
@@ -68,21 +60,22 @@ describe('Make a game', function () {
     game.update(clueId, playerGuess);
 
 
-    game.dataManager.data[clueId].available = false;
+    game.clues[clueId].available = false;
     
     for (let i = 0; i < 16; i++) {
-      game.dataManager.data[i].available = false;
+      game.clues[i].available = false;
     }
     game.updateRound();
  
-    game.players[0].finalWager = 99;
-    game.players[1].finalWager = 101;
-    game.players[2].finalWager = 98;
+    game.getCurrentPlayer().finalWager = 99;
+    game.rotateCurrentPlayer();
+    game.getCurrentPlayer().finalWager = 101;
+    game.rotateCurrentPlayer();
+    game.getCurrentPlayer().finalWager = 98;
     let winner = game.determineWinner();
     
     expect(game.checkAnswer(clueId, playerGuess)).to.equal(false);
-    expect(game.dataManager.data[clueId].available).to.equal(false);
-    expect(game.canClickClue).to.equal(true);
+    expect(game.clues[clueId].available).to.equal(false);
     expect(game.players[0].score).to.be.equal(0);
     expect(game.players[0].name).to.be.equal('Cat');
     expect(game.round).to.equal(2);
@@ -100,8 +93,10 @@ describe('Make a game', function () {
   it('Should be able to check answer', function () {
 
     let check = game.checkAnswer(0, 'Uncrustables rock');
-    // also check for when it's true
     expect(check).to.be.equal(false);
+
+    check = game.checkAnswer(0, game.clues[0].answer);
+    expect(check).to.be.equal(true);
   });
 
   it('Should be able to update final wager', function () {
@@ -150,7 +145,7 @@ describe('Make a game', function () {
     expect(game.round).to.equal(1);
 
     for (let i = 0; i < 16; i++) {
-      game.dataManager.data[i].available = false;
+      game.clues[i].available = false;
     }
     game.updateRound();
     expect(game.round).to.equal(2);

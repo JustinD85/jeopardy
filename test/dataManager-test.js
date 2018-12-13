@@ -1,6 +1,7 @@
 const chai = require('chai');
 const expect = chai.expect;
-global.data = require( '../js/data.js');
+// global.data = require( '../js/game.js');
+global.Game = 
 global.Clue = require( '../js/Clue.js');
 const DataManager = require('../js/dataManager.js');
 
@@ -24,13 +25,15 @@ describe('Manage Data', function () {
 
   it('Should be able to have data', function () {
     
-    expect(typeof dataManager.data[0].answer).to.equal('string');
+    expect(typeof dataManager.sourceData.clues[0].answer).to.equal('string');
   });
 
   it('Should be able to format data', function () {
     dataManager.formatData();
-    let changed = dataManager.data[0];
-  
+    let unchanged = dataManager.sourceData.clues[0];
+    let changed = dataManager.formatData()[0];
+    
+    expect(unchanged.available).to.be.equal(undefined);
     expect(changed.available).to.be.equal(true);
     expect(typeof changed.categoryId).to.be.equal('number');
   });

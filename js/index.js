@@ -26,7 +26,7 @@ function render(event) {
   let targetOfAnswer = event.target.closest('.answer-container');
   const isRoundOneOrTwo = targetOfClue && game.round < 3;
 
-  if (isRoundOneOrTwo && game.canClickClue) {
+  if (isRoundOneOrTwo) {
     $("#game-board").hide();
     showAnswerOrWager(targetOfClue);
   }
@@ -86,8 +86,7 @@ function showFinalRound() {
 function showAnswerOrWager(clueId) {
   let clueBox = buildClueBox(clueId);
 
-  game.canClickClue = false;
-  let clickedClueID = game.dataManager.data[clueId];
+  let clickedClueID = game.clues[clueId];
   if (clickedClueID instanceof Wager) {
     changeGameMessage(`Press a Positive or Negative number to Change your wager!`)
     showWager(clueId);
@@ -115,13 +114,13 @@ function showWager(clueId) {
       
       const currentMax = parseInt($('.wager-max').text());
       if (desiredAMount < 0) {
-        game.dataManager.data[clueId].value = 5;
+        game.clues[clueId].value = 5;
       } else if (desiredAMount < currentMax) {
         $("#wager-amount").text(submitAmount + selectedAmt);
-        game.dataManager.data[clueId].value = submitAmount + selectedAmt;
+        game.clues[clueId].value = submitAmount + selectedAmt;
       } else {
         $("#wager-amount").text(currentMax);
-        game.dataManager.data[clueId].value = currentMax;
+        game.clues[clueId].value = currentMax;
       }
     })
   })
@@ -129,7 +128,7 @@ function showWager(clueId) {
 
 function buildClueBox(clueId) {
   let clueBox;
-  let clue = game.dataManager.data[clueId];
+  let clue = game.clues[clueId];
   clueBox = createElWithClass('div', `.question-container`);
   clueBox.append(createElWithClass('h3', '.category', clue.category));
   clueBox.append(createElWithClass('h3', '.point-value', clue.value));
@@ -142,8 +141,8 @@ function buildClueBox(clueId) {
 function createWagerArea(clueId = 32) {
   let positives = [5, 10, 100, 1000];
   let negatives = [-5, -10, -100, -1000];
-  let cluePointValue = game.dataManager.data[clueId].value;
-  let wagerContainer;
+  let cluePointValue = game.clues[clueId].value;
+  let dailyDouble;
   let tempElement;
   let maxValue = game.players[0].score;
 
@@ -151,29 +150,33 @@ function createWagerArea(clueId = 32) {
     maxValue = cluePointValue;
   }
 
-  wagerContainer = createElWithClass('div', '.wager-container');
-  wagerContainer.append(createElWithClass('h1', '.wager-title', 'Wager'));
+  dailyDouble = createElWithClass('div', '.wager-container');
+  if (game.round < 3) {
+    dailyDouble.append(createElWithClass('h1', '.wager-title', 'Daily Double! \n Please input a wager'));
+  } else {
+    dailyDouble.append(createElWithClass('h1', '.wager-title', 'Final Jeopardy! \n Please input a wager'));
+  }
 
   tempElement = createElWithClass('section', '.ans-pos-box');
-  wagerContainer.append(buildWagerValueBox(tempElement, positives));
+  dailyDouble.append(buildWagerValueBox(tempElement, positives));
 
   tempElement = createElWithClass('section', '.ans-neg-box');
-  wagerContainer.append(buildWagerValueBox(tempElement, negatives));
+  dailyDouble.append(buildWagerValueBox(tempElement, negatives));
 
   tempElement = createElWithClass('section', '.range-submit');
   tempElement.append(createElWithClass('span', '.wager-min', '5'));
-  wagerContainer.append(tempElement);
+  dailyDouble.append(tempElement);
 
   tempElement.append(createElWithId('button', '#wager-amount', '0'));
-  wagerContainer.append(tempElement);
+  dailyDouble.append(tempElement);
 
   if (maxValue <= 0) {
     maxValue = 5;
   }
   tempElement.append(createElWithClass('span', '.wager-max', `${maxValue}`));
-  wagerContainer.append(tempElement);
+  dailyDouble.append(tempElement);
 
-  return wagerContainer;
+  return dailyDouble;
 }
 
 function buildWagerValueBox(element, wagerValues) {
@@ -189,8 +192,8 @@ function showAnswers(clueBox, clueId) {
   $(".wager-container").remove();
   
   let answerContainer;
-  let correctAnswer = game.dataManager.data[clueId].answer;
-  let categoryId = game.dataManager.data[clueId].categoryId;
+  let correctAnswer = game.clues[clueId].answer;
+  let categoryId = game.clues[clueId].categoryId;
   let answers = game.getAllCluesByCategoryId(categoryId, clueId);
   answers.push(correctAnswer);
   answers = game.dataManager.randomizeArray(answers);
@@ -270,14 +273,14 @@ function createBoard() {
 
   for (let i = 0; i < colCount; i++) {
     let column = createElWithClass('section', '.category');
-    let clueCat = `<h4>${game.dataManager.data[id].category}</h4>`;
+    let clueCat = `<h4>${game.clues[id].category}</h4>`;
     let row = createElWithClass('article', '.clue', '', clueCat);
 
     column.append(row);
     for (let j = 0; j < rowCount; j++) {
       let clueValue = '';
-      if (game.dataManager.data[id].available) {
-        clueValue = `<h4> ${game.dataManager.data[id].value}</h4>`;
+      if (game.clues[id].available) {
+        clueValue = `<h4> ${game.clues[id].value}</h4>`;
         row = createElWithClass('article', '.clue', '', clueValue);
         row.dataset.id = `${id}`;
       } else {

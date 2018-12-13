@@ -1,8 +1,6 @@
 class DataManager {
   constructor() {
     this.sourceData = data;
-    this.data = [];
-    this.formatData();
     this.imgs = [
       "./img/zebra-face.png",
       "./img/cat-face.png",
@@ -69,7 +67,7 @@ class DataManager {
     const flippedTuringCategories = this.flipDataSetValues(this.sourceData.categories);
     const dailyDoubles = this.generateDailyDoubleNums();
 
-    this.data = this.getCluesForBoard(randomCategoriesKeys).reduce((acc, clue, clueIdForDOM) => {
+    return  this.getCluesForBoard(randomCategoriesKeys).reduce((acc, clue, clueIdForDOM) => {
       let currentCategory = flippedTuringCategories[clue.categoryId];
       let clueOptions = {
         question: this.parseQuestion(clue.question),
