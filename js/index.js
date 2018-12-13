@@ -194,7 +194,7 @@ function showAnswers(clueBox, clueId) {
 
   clueBox.append(answerContainer);
   clueBox.append(createElWithClass('button', '.cont-btn', 'Continue'));
-  $('.contBtn').hide();
+  $('.cont-btn').hide();
   
   [...document.querySelectorAll('.answer')].forEach((elem) => {
     elem.addEventListener('click', (event) => {
