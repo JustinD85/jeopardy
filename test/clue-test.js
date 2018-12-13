@@ -7,31 +7,32 @@ describe('Make a clue', function () {
 
   beforeEach(function () {
 
-    clue = new Clue({ question: 'What is red', answer: 'A color', pointValue: 100, category: 'Colors'});
+    clue = new Clue({
+      question: 'What is red',
+      answer: 'A color',
+      pointValue: 100,
+      category: 'Colors',
+      categoryId: 7
+    });
   });
 
-  it('Should be able to have a question', function () {
+  it('not undefined', function () {
+
+    expect(clue).to.not.be.undefined;
+  })
+
+  it('Should be an Object', function () {
+
+    expect(typeof clue).to.equal('object');
+  });
+
+  it('Should be able to have default properties', function () {
     
     expect(clue.question).to.equal('What is red');
-  });
-
-  it('Should be able to have an answer', function () {
-
     expect(clue.answer).to.equal('A color');
-  });
-
-  it('Should be able to have a default availability', function () {
-
     expect(clue.available).to.equal(true);
-  });
-
-  it('Should be able to have a value', function () {
-
     expect(clue.value).to.equal(100);
-  });
-
-  it('Should be able to have a category', function () {
-
     expect(clue.category).to.equal('Colors');
+    expect(clue.categoryId).to.equal(7);
   });
 });

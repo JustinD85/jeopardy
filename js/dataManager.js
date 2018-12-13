@@ -74,9 +74,14 @@ class DataManager {
         category: this.parseTitle(currentCategory)
       };
       
-      if (clueIdForDOM > 31 && !dailyDoubles.includes(clueIdForDOM)) return acc; 
-      if (dailyDoubles.includes(clueIdForDOM)) { acc.push(new Wager(clueOptions)) }
-      else { acc.push(new Clue(clueOptions)) }
+      if (clueIdForDOM > 31 && !dailyDoubles.includes(clueIdForDOM)) { 
+        return acc; 
+      }
+      if (dailyDoubles.includes(clueIdForDOM)) {
+        acc.push(new Wager(clueOptions))
+      } else {
+        acc.push(new Clue(clueOptions))
+      }
       
       return acc;
     }, []);
