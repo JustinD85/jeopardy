@@ -2,7 +2,30 @@
 * {
   box-sizing: border-box;
   font-family: 'Amatic SC', cursive;
+  margin:0;
+  padding:0;
   font-weight: bolder;
+  font-size:1.3rem;
+}
+
+body {
+  height: 100vh;
+  background: #0099e0;
+}
+#view{
+  height:95%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+#quit{
+  border-radius: 50%;
+  padding:30px;
+  position: absolute;
+  bottom:-15px;
+  right:-15px;
+  background:crimson;
 }
 #start-btn{
   position: absolute;
@@ -13,16 +36,29 @@
   right:10%;
 }
 
-body {
-  height: 100vh;
-  background: #0099e0;
+#player-area {
+  width: 100%;
+  text-align: center;
+  margin: 20px auto 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
+#current-player {
+  color: white;
+  border-radius: 10px;
+  padding:10px;
+  box-shadow: 
+  whitesmoke 0 0px 10px 1px inset,
+  whitesmoke 0 0px 10px 1px;
+}
 
 .cloud-1{
   position: absolute;
   animation: 15s  infinite cloudsForward;
   left:0px;
+  z-index: -1;
 }
 
 .cloud-2{
@@ -38,6 +74,7 @@ body {
   animation: 25s  infinite cloudsForward;
   left:200px;
   top:300px;
+  z-index: -1;
 }
 
 @keyframes cloudsForward{
@@ -74,8 +111,13 @@ body {
 }
 
 #title {
-  font-size: 4rem;
-  text-align: center;
+  font-size: 9rem;
+}
+
+#title span:nth-child(1){
+  position: absolute;
+  top:100px;
+  color:blue;
 }
 
 .profile-picture {
@@ -110,35 +152,38 @@ input {
   }
 }
 
-.hide {
-  size: 0;
-  height: 0;
-  width: 0;
-  visibility: hidden;
-}
 
+
+#loading-screen{
+  height:100vh;
+  object-fit: cover;
+}
 
 /*CLUE BOXES*/
 #game-board {
-  height: 85%;
-  min-height: 500px;
-  /* border: 1px solid green; */
-  /* background-color: lightgrey; */
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-}
-
-.category {
-  height: 100%;
-  /* border: 1px solid whitesmoke; */
+  width: 80%;
+  margin:auto;
 }
 
 .clue {
-  height: 10%;
+  text-align: center;
+  line-height: -15px;
+  min-height: 3rem;
+  height: auto;
   border-radius: 5px;
-  padding:5% 2%;;
+  padding:5% 2%;
+  margin: 9% 1%;
   background-color: #123652;
   border: 1px solid whitesmoke;
+  color:whitesmoke;
+}
+.clue:nth-child(1){
+  background:crimson;
+  line-height: -5px;
+  /* color:crimson; */
+  height:4rem;
 }
 
 .wager section {
@@ -149,16 +194,4 @@ input {
 
 .number {
   background: lightgoldenrodyellow;
-}
-
-.player-area {
-  display: inline-block;
-  width: 100%;
-  text-align: center;
-  margin: 0 auto;
-  background: green;
-}
-
-.player-0 {
-  color: white;
 }

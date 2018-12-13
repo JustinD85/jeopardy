@@ -10,7 +10,7 @@ const domMethods = {
 }
 
 function render(event) {
-  let targetOfClue = event.target.dataset.id;
+  let targetOfClue = event.target.parentElement.dataset.id;
   let targetOfAnswer = event.target.closest('.question');
   const isRoundOneOrTwo = targetOfClue && game.round < 3;
   
@@ -183,6 +183,7 @@ function showAnswers(clueBox, clueId) {
 
   clueBox.append(answerContainer);
   clueBox.append(createElWithClass('button', '.contBtn', 'Continue'));
+  $('.contBtn').hide();
 
   [...document.querySelectorAll('.answer')].forEach((elem) => {
     elem.addEventListener('click', (event) => {
@@ -236,14 +237,14 @@ function createBoard() {
 
   for (let i = 0; i < colCount; i++) {
     let column = createElWithClass('section', '.category');
-    let clueCat = `<h1>${game.data[id].category}</h1>`;
+    let clueCat = `<h4>${game.data[id].category}</h4>`;
     let row = createElWithClass('article', '.clue', '', clueCat);
 
     column.append(row);
     for (let j = 0; j < rowCount; j++) {
       let clueValue = '';
       if (game.data[id].available) {
-        clueValue = `<h1> ${game.data[id].value}</h1>`;
+        clueValue = `<h4> ${game.data[id].value}</h4>`;
         row = createElWithClass('article', '.clue', '', clueValue);
         row.dataset.id = `${id}`;
       } else {
@@ -269,12 +270,13 @@ function updatePlayers(playerArea) {
     let { name, score } = player;
     let playerCard = `${name} score: ${score}`;
     let user = createElWithClass('article', `.player-${i}`, playerCard);
+    if (i == 0) user.id = 'current-player';
     playerArea.append(user);
   });
 }
 
 function createQuitButton() {
-  $("#view").append(createElWithId('article', '#quit', 'QUIT'));
+  $("body").append(createElWithId('span', '#quit', 'QUIT'));
   $("#quit").on("click", resetGame);
 }
 
@@ -291,24 +293,16 @@ function transitionToGame() {
     return player.value;
   });
   // transition img below
-  $("#view").html(`<img src="./img/loading.gif">`);
+  $("#view").html(`<img  id="loading-screen" src="https://media.giphy.com/media/qsNbIXpcFJ9Li/giphy.gif">`);
 
   // timeout is to display the transition screen
   window.setTimeout(() => {
     game = new Game(playerNames);
     clearScreen();
     createPlayerArea();
-    createQuitButton();
     updateBoard();
+    createQuitButton();
   }, 500);
-}
-
-function removeHide(e) {
-  if (e.classList.contains('hide')) {
-    e.classList.remove('hide');
-  } else {
-    e.classList.add('hide');
-  }
 }
 
 if (typeof module !== 'undefined') {
@@ -316,4 +310,3 @@ if (typeof module !== 'undefined') {
 } else {
   $("#start-btn").on("click", transitionToGame);
 }
-$("#start-btn").click();
