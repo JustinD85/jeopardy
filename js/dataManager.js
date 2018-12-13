@@ -1,7 +1,8 @@
 class DataManager {
   constructor() {
-    this.data = data;
-    return this.formatData();
+    this.sourceData = data;
+    this.data = [];
+    this.formatData();
   }
 
   flipDataSetValues(object) {
@@ -29,8 +30,8 @@ class DataManager {
     
     randomCategoriesKeys.forEach((categoryKey) => {
 
-      let allCluesThisCat = this.data.clues.filter((clue) => {
-        return clue.categoryId === this.data.categories[categoryKey];
+      let allCluesThisCat = this.sourceData.clues.filter((clue) => {
+        return clue.categoryId === this.sourceData.categories[categoryKey];
       })
 
       allCluesThisCat = this.randomizeArray(allCluesThisCat);
@@ -58,12 +59,12 @@ class DataManager {
   }
 
   formatData() {
-    const notRandomCategories = Object.keys(this.data.categories);
+    const notRandomCategories = Object.keys(this.sourceData.categories);
     const randomCategoriesKeys = this.randomizeArray(notRandomCategories);
-    const flippedTuringCategories = this.flipDataSetValues(this.data.categories);
+    const flippedTuringCategories = this.flipDataSetValues(this.sourceData.categories);
     const dailyDoubles = this.generateDailyDoubleNums();
 
-    return this.getCluesForBoard(randomCategoriesKeys).reduce((acc, clue, clueIdForDOM) => {
+    this.data = this.getCluesForBoard(randomCategoriesKeys).reduce((acc, clue, clueIdForDOM) => {
       let currentCategory = flippedTuringCategories[clue.categoryId];
       let clueOptions = {
         question: clue.question,
