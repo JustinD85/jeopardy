@@ -20,29 +20,31 @@ body {
   justify-content: space-around;
 }
 
-.question:nth-child(1),
-.question:nth-child(2){
 
-}
-.question-container{
-  
-}
 
 .wager-title{
   margin-top:0;
+}
+.question-container .question{
+  word-wrap: break-word;
+  padding-bottom:10px;
+}
+.point-value{
+  margin-bottom:20px;
 }
 .question-container,
 .wager-container{
   box-shadow:
   whitesmoke 0 0px 10px 1px inset,
   whitesmoke 0 0px 10px 1px;
+  padding:20px;
   min-width: 50%;
+  max-width: 400px;
   margin:auto;
   text-align: center;
   color:whitesmoke;
   background:#123652;
-  border-radius: 90px;
-  padding:10px;
+  border-radius: 40px;
 }
 .wager-max::before{
   content:'Max:';
@@ -63,14 +65,13 @@ body {
 
 .answer{
   background:crimson;
-  /* height:3rem; */
-  padding:1rem;
+  padding:.5rem;
+  border-radius: 10px;
   margin:7px;
   display: inline-block;
   box-shadow:
   whitesmoke 0 0px 10px 1px inset,
   whitesmoke 0 0px 10px 1px;
-  /* border:whitesmoke solid 1px; */
   text-align: center;
   width:45%;
 }
@@ -117,6 +118,12 @@ body {
 #current-player::after{
   content:'↜'
 }
+.in-game-profile-picture{
+height:40px;
+width:40px;
+
+}
+
 .cloud-1 {
   position: absolute;
   animation: 85s infinite cloudsForward;
