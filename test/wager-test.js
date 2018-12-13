@@ -42,7 +42,8 @@ describe('Make a wager', function () {
   });
 
   it('Should be able to update wager value', function () {
-
-    expect(wager.updateValue(1)).to.equal(100);
+    wager.updateValue(100);
+    
+    expect(wager.value).to.equal(100);
   });
 });
