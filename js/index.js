@@ -10,54 +10,62 @@ const domMethods = {
 }
 
 function render(event) {
-  let targetOfClue = event.target.dataset.id;
-  let targetOfAnswer = event.target.closest('.question');
+  let targetOfClue = event.target.parentElement.dataset.id;
+  let targetOfAnswer = event.target.closest('.answer-container');
   const isRoundOneOrTwo = targetOfClue && game.round < 3;
-  
+
   if (isRoundOneOrTwo && game.canClickClue) {
     $("#game-board").hide();
     showAnswerOrWager(targetOfClue);
   }
-  
+
   if (targetOfAnswer) {
     game.update(event.target.id, event.target.innerText);
     clearScreen();
     createPlayerArea();
   }
-  
+
   if (targetOfAnswer && game.round < 3) {
     updateBoard();
   } else if (game.round === 3) {
     showFinalRound();
   }
 }
+function changeGameMessage(msg) {
+  $('#info').text(msg);
+}
 
 function showFinalRound() {
-  let posValues = [5, 10, 100, 1000];
-  let negValues = [-5, -10, -100, -1000];
-
+  changeGameMessage(`Final Round! ${game.players[0].name} choose your wager!`)
   let view = document.querySelector(`#view`);
-
+  $("#player-area").hide();
   $(".question").hide();
-  view.append(createWagerArea(posValues, negValues));
+  $("#game-board").hide();
   
+  view.append(createWagerArea());
+
   $("#wager-amount").on("click", () => {
     if (!game.players[1].finalWager) {
+      changeGameMessage(`Great! Now it's ${game.players[1].name}'s turn to choose!`)
       game.rotateCurrentPlayer();
     } else {
       game.rotateCurrentPlayer();
       showAnswers(buildClueBox(32), 32);
-    } 
+    }
   });
-
   [...document.querySelectorAll('.number')].forEach((wagerNum) => {
     wagerNum.addEventListener('click', (e) => {
-
       const selectedAmt = parseInt(e.target.innerText);
       const submitAmount = parseInt($("#wager-amount").text());
-
-      $("#wager-amount").text(submitAmount + selectedAmt);
-      game.players[0].finalWager = submitAmount + selectedAmt;
+      const desiredAMount = submitAmount + selectedAmt;
+      const currentMax = parseInt(document.querySelector('.wager-max').innerText);
+      if (desiredAMount < currentMax) {
+        $("#wager-amount").text(submitAmount + selectedAmt);
+        game.players[0].finalWager = submitAmount + selectedAmt;
+      } else {
+        $("#wager-amount").text(currentMax);
+        game.players[0].finalWager = currentMax;
+      }
     })
   })
 }
@@ -67,6 +75,7 @@ function showAnswerOrWager(clueId) {
 
   game.canClickClue = false;
   if (game.dataManager.data[clueId] instanceof Wager) {
+    changeGameMessage(`Press a Positive or Negative number to Change your wager!`)
     showWager(clueId);
   } else {
     showAnswers(clueBox, clueId);
@@ -74,13 +83,11 @@ function showAnswerOrWager(clueId) {
 }
 
 function showWager(clueId) {
-  let posValues = [5, 10, 100, 1000];
-  let negValues = [-5, -10, -100, -1000];
 
   let view = document.querySelector(`#view`);
-  
-  $(".question").hide();
-  view.append(createWagerArea(posValues, negValues));
+
+  $(".question-container").hide();
+  view.append(createWagerArea(clueId));
 
   $("#wager-amount").on("click", () => {
     showAnswers(buildClueBox(clueId), clueId);
@@ -88,12 +95,17 @@ function showWager(clueId) {
 
   [...document.querySelectorAll('.number')].forEach((wagerNum) => {
     wagerNum.addEventListener('click', (e) => {
-
       const selectedAmt = parseInt(e.target.innerText);
       const submitAmount = parseInt($("#wager-amount").text());
-
-      $("#wager-amount").text(submitAmount + selectedAmt);
-      game.dataManager.data[clueId].value = submitAmount + selectedAmt;
+      const desiredAMount = submitAmount + selectedAmt;
+      const currentMax = parseInt(document.querySelector('.wager-max').innerText);
+      if (desiredAMount < currentMax) {
+        $("#wager-amount").text(submitAmount + selectedAmt);
+        game.dataManager.data[clueId].value = submitAmount + selectedAmt;
+      } else {
+        $("#wager-amount").text(currentMax);
+        game.dataManager.data[clueId].value = currentMax;
+      }
     })
   })
 }
@@ -101,21 +113,27 @@ function showWager(clueId) {
 function buildClueBox(clueId) {
   let clueBox;
   let clue = game.dataManager.data[clueId];
-  clueBox = createElWithClass('div', `.question`);
-  clueBox.append(createElWithClass('h3', '.question', clue.category));
-  clueBox.append(createElWithClass('h3', '.question', clue.value));
+  clueBox = createElWithClass('div', `.question-container`);
+  clueBox.append(createElWithClass('h3', '.category', clue.category));
+  clueBox.append(createElWithClass('h3', '.point-value', clue.value));
   clueBox.append(createElWithClass('h3', '.question', clue.question));
 
   $("#view").append(clueBox);
   return clueBox;
 }
 
-function createWagerArea(positives, negatives) {
+function createWagerArea(clueId = 32) {
+  let positives = [5, 10, 100, 1000];
+  let negatives = [-5, -10, -100, -1000];
+  let cluePointValue = game.dataManager.data[clueId].value;
   let wagerContainer;
   let tempElement;
+  let maxValue = game.players[0].score;
 
-  wagerContainer = createElWithClass('div', '.wager');
-  wagerContainer.append(createElWithClass('h1', '.wager', 'Wager'));
+  if (cluePointValue > maxValue) maxValue = cluePointValue;
+
+  wagerContainer = createElWithClass('div', '.wager-container');
+  wagerContainer.append(createElWithClass('h1', '.wager-title', 'Wager'));
 
   tempElement = createElWithClass('section', '.ans-pos-box');
   wagerContainer.append(buildWagerValueBox(tempElement, positives));
@@ -124,27 +142,30 @@ function createWagerArea(positives, negatives) {
   wagerContainer.append(buildWagerValueBox(tempElement, negatives));
 
   tempElement = createElWithClass('section', '.range-submit');
-  tempElement.append(createElWithClass('span', '.wager-range', 'min: 5'));
+  tempElement.append(createElWithClass('span', '.wager-min', '5'));
   wagerContainer.append(tempElement);
 
   tempElement.append(createElWithId('button', '#wager-amount', '0'));
   wagerContainer.append(tempElement);
 
-  tempElement.append(createElWithClass('span', '.wager-range', 'max: 9999'));
+  if (maxValue <= 0) { maxValue = 5 };
+  tempElement.append(createElWithClass('span', '.wager-max', `${maxValue}`));
   wagerContainer.append(tempElement);
 
   return wagerContainer;
 }
 
-function buildWagerValueBox(element, arr) {
-  arr.forEach((value) => {
+function buildWagerValueBox(element, wagerValues) {
+  wagerValues.forEach((value) => {
     element.append(createElWithClass('span', '.number', value));
   });
   return element;
 }
 
 function showAnswers(clueBox, clueId) {
-  $(".wager").remove();
+  changeGameMessage(` ${game.players[0].name}, please choose an answer!
+  `)
+  $(".wager-container").remove();
   
   let answerContainer;
   let correctAnswer = game.dataManager.data[clueId].answer;
@@ -153,8 +174,8 @@ function showAnswers(clueBox, clueId) {
   answers.push(correctAnswer);
   answers = game.dataManager.randomizeArray(answers);
   answers = answers.map(answer => answer);
-
-  answerContainer = createElWithClass('div', '.answerContainer');
+  
+  answerContainer = createElWithClass('div', '.answer-container');
   answers.forEach(answer => {
     let answerBox = createElWithId('div', `#${clueId}`, answer)
     answerBox.classList.add('answer');
@@ -162,32 +183,42 @@ function showAnswers(clueBox, clueId) {
   });
 
   clueBox.append(answerContainer);
-  clueBox.append(createElWithClass('button', '.contBtn', 'Continue'));
-
+  clueBox.append(createElWithClass('button', '.cont-btn', 'Continue'));
+  $('.contBtn').hide();
+  
   [...document.querySelectorAll('.answer')].forEach((elem) => {
     elem.addEventListener('click', (event) => {
-  
+      
       if (game.round < 3) {
         $(".question").remove();
         $("#game-board").show();
         render(event)
       } else {
+        
         let playerGuess = event.target.innerText
         let isCorrectGuess = game.checkAnswer(clueId, playerGuess);
         game.updateFinalWager(isCorrectGuess);
         if (game.finalContestants < 2) {
           game.rotateCurrentPlayer();
+          changeGameMessage(` ${game.players[0].name}, please choose an answer!`);
           game.finalContestants++;
         } else {
-          $(".question").remove();
+          $(".question-container").remove();
           let resultList = game.determineWinner();
-
-          let resultsContainer = createElWithId('div', '#results')
-          resultList.forEach(player => { 
-            let tempEl = createElWithClass('span', '.results', `${player.name} $${player.finalWager}`);
-            resultsContainer.append(tempEl);
-          })
+          changeGameMessage(``);
           
+          let resultsContainer = createElWithId('div', '#results')
+          resultList.forEach((player, i) => {
+            let playerForResults;
+            if (i === 0) {
+              playerForResults = createElWithClass('span', '.results', `${player.name} won with $${player.finalWager}!`);
+              playerForResults.id = 'winner'
+            } else {
+              playerForResults = createElWithClass('span', '.results', `Good try ${player.name} with $${player.finalWager}`);
+            }
+            resultsContainer.append(playerForResults);
+          })
+
           $("#view").append(resultsContainer);
         }
       }
@@ -216,14 +247,15 @@ function createBoard() {
 
   for (let i = 0; i < colCount; i++) {
     let column = createElWithClass('section', '.category');
-    let clueCat = `<h1>${game.dataManager.data[id].category}</h1>`;
+    let clueCat = `<h4>${game.dataManager.data[id].category}</h4>`;
     let row = createElWithClass('article', '.clue', '', clueCat);
 
     column.append(row);
     for (let j = 0; j < rowCount; j++) {
       let clueValue = '';
       if (game.dataManager.data[id].available) {
-        clueValue = `<h1> ${game.dataManager.data[id].value}</h1>`;
+        game.dataManager.data[id].value = game.dataManager.data[id].value * game.round;
+        clueValue = `<h4> ${game.dataManager.data[id].value}</h4>`;
         row = createElWithClass('article', '.clue', '', clueValue);
         row.dataset.id = `${id}`;
       } else {
@@ -249,12 +281,16 @@ function updatePlayers(playerArea) {
     let { name, score } = player;
     let playerCard = `${name} score: ${score}`;
     let user = createElWithClass('article', `.player-${i}`, playerCard);
+    if (i == 0) {
+      user.id = 'current-player'
+      $('#info').text(`It's Currently ${name}'s Turn!`)
+    }
     playerArea.append(user);
   });
 }
 
 function createQuitButton() {
-  $("#view").append(createElWithId('article', '#quit', 'QUIT'));
+  $("body").append(createElWithId('span', '#quit', 'QUIT'));
   $("#quit").on("click", resetGame);
 }
 
@@ -271,24 +307,16 @@ function transitionToGame() {
     return player.value;
   });
   // transition img below
-  $("#view").html(`<img src="./img/loading.gif">`);
+  $("#view").html(`<img  id="loading-screen" src="https://media.giphy.com/media/qsNbIXpcFJ9Li/giphy.gif">`);
 
   // timeout is to display the transition screen
   window.setTimeout(() => {
     game = new Game(playerNames);
     clearScreen();
     createPlayerArea();
-    createQuitButton();
     updateBoard();
-  }, 500);
-}
-
-function removeHide(e) {
-  if (e.classList.contains('hide')) {
-    e.classList.remove('hide');
-  } else {
-    e.classList.add('hide');
-  }
+    createQuitButton();
+  }, 6500);
 }
 
 if (typeof module !== 'undefined') {
