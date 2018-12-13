@@ -1,13 +1,16 @@
 /*ENTIRE PAGE - DEFAULTS*/
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Handlee', cursive;
-  font-family: 'Black And White Picture', sans-serif;
   font-family: 'Amatic SC', cursive;
-  font-family: 'Fredoka One', cursive;
   font-weight: bolder;
+}
+#start-btn{
+  position: absolute;
+  border-radius: 5px;
+  height:75px;
+  width:100px;
+  bottom:10%;
+  right:10%;
 }
 
 body {
@@ -15,9 +18,59 @@ body {
   background: #0099e0;
 }
 
+
+.cloud-1{
+  position: absolute;
+  animation: 15s  infinite cloudsForward;
+  left:0px;
+}
+
+.cloud-2{
+  position: absolute;
+  animation: 25s  infinite cloudsReverse;
+  right:0px;
+  top:200px;
+  z-index: -2;
+}
+
+.cloud-3{
+  position: absolute;
+  animation: 25s  infinite cloudsForward;
+  left:200px;
+  top:300px;
+}
+
+@keyframes cloudsForward{
+  0%,100%{
+  }
+  50%{
+    left:calc(100vw);
+  }
+}
+
+@keyframes cloudsReverse{
+  0%,100%{
+  }
+  50%{
+    right:calc(100vw);
+  }
+}
+
 .birds{
   position: absolute;
   z-index: -1;
+  animation:  3s infinite fly;
+}
+
+@keyframes fly{
+  0%,100%{
+    left:40%;
+    top:30%;
+  }
+  50%{
+    left:30%;
+    top:20%;
+  }
 }
 
 #title {
@@ -38,14 +91,10 @@ body {
 
 input {
   border-radius: 5px;
-  /* transition: 10s; */
   height: 2rem;
   width: 30%;
   margin: 5%;
   border: 1px lightblue solid;
-}
-
-input {
   transition: 2s;
   animation: infinite 1400ms rotate-color;
 }
@@ -54,11 +103,10 @@ input {
 
   0%,
   100% {
-    color: lightblue
+    color: lightblue;
   }
-
   50% {
-    color: purple
+    color: purple;
   }
 }
 
@@ -70,26 +118,27 @@ input {
 }
 
 
-
 /*CLUE BOXES*/
 #game-board {
   height: 85%;
   min-height: 500px;
-  border: 1px solid green;
-  background-color: lightgrey;
+  /* border: 1px solid green; */
+  /* background-color: lightgrey; */
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 .category {
-  background-color: pink;
   height: 100%;
-  border: 1px solid red;
+  /* border: 1px solid whitesmoke; */
 }
 
 .clue {
-  height: 20%;
-  border: 1px solid blue;
+  height: 10%;
+  border-radius: 5px;
+  padding:5% 2%;;
+  background-color: #123652;
+  border: 1px solid whitesmoke;
 }
 
 .wager section {
