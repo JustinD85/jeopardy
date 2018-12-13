@@ -10,13 +10,20 @@ describe('Make a player', function () {
     player = new Player('Pam');
   });
 
-  it('Should be able to make a new player', function() {
+  it('not undefined', function () {
 
-    expect(player.name).to.equal('Pam');
+    expect(player).to.not.be.undefined;
+  })
+
+  it('Should be an Object', function () {
+
+    expect(typeof player).to.equal('object');
   });
 
-  it('Should start with a score of zero', function () {
+  it('Should be able to have default properties', function() {
 
+    expect(player.name).to.equal('Pam');
     expect(player.score).to.equal(0);
+    expect(player.finalWager).to.equal(0);
   });
 });
