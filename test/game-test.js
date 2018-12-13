@@ -16,9 +16,19 @@ describe('Make a game', function () {
     game = new Game(['Adam', 'Bob', 'Cat']);
   });
 
-  it('Should be able to have rounds', function () {
+  it('not undefined', function () {
+
+    expect(game).to.not.be.undefined;
+  })
+
+  it('Should be able to have default properties', function () {
 
     expect(game.round).to.equal(1);
+    expect(game.players.length).to.deep.equal(3);
+    expect(game.board).to.deep.equal({});
+    expect(game.dataManager).to.not.be.equal({});
+    expect(game.canClickClue).to.equal(true);
+    expect(game.finalContestants).to.equal(0);
   });
 
   it('Should be able to have 3 players', function () {
@@ -28,14 +38,9 @@ describe('Make a game', function () {
     expect(game.players[2]).to.deep.equal(new Player('Cat'));
   });
 
-  it.skip('Should be able to have a board', function () {
-
-    expect(game.board).to.deep.equal();
-  });
-
   it('Should be able to have data', function () {
     
-   let clueAns =  game.dataManager.data[0].answer
+    let clueAns =  game.dataManager.data[0].answer
 
     expect(typeof clueAns).to.equal('string');
   });
@@ -162,9 +167,5 @@ describe('Make a game', function () {
     }
     game.updateRound();
     expect(game.round).to.equal(3);
-
   });
-
-
-
 });
