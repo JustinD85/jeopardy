@@ -9,25 +9,57 @@ const domMethods = {
   transitionToGame
 }
 
-console.error('NEED TO USE GAME.UPDATE ONLY TO UPDATE GAME');
-
 function render(event) {
   let targetOfClue = event.target.dataset.id;
   let targetOfAnswer = event.target.closest('.question');
   const isRoundOneOrTwo = targetOfClue && game.round < 3;
-
+  
   if (isRoundOneOrTwo && game.canClickClue) {
     $("#game-board").hide();
     showAnswerOrWager(targetOfClue);
   }
-
+  
   if (targetOfAnswer) {
-    let clueId = event.target.id;
-    game.update(clueId, event.target.innerText);
-    clearPlayerArea();
-    updateBoard();
-    updatePlayers($("#player-area"));
+    game.update(event.target.id, event.target.innerText);
+    clearScreen();
+    createPlayerArea();
   }
+  
+  if (targetOfAnswer && game.round < 3) {
+    updateBoard();
+  } else if (game.round === 3) {
+    showFinalRound();
+  }
+}
+
+function showFinalRound() {
+  let posValues = [5, 10, 100, 1000];
+  let negValues = [-5, -10, -100, -1000];
+
+  let view = document.querySelector(`#view`);
+
+  $(".question").hide();
+  view.append(createWagerArea(posValues, negValues));
+  
+  $("#wager-amount").on("click", () => {
+    if (!game.players[1].finalWager) {
+      game.rotateCurrentPlayer();
+    } else {
+      game.rotateCurrentPlayer();
+      showAnswers(buildClueBox(32), 32);
+    } 
+  });
+
+  [...document.querySelectorAll('.number')].forEach((wagerNum) => {
+    wagerNum.addEventListener('click', (e) => {
+
+      const selectedAmt = parseInt(e.target.innerText);
+      const submitAmount = parseInt($("#wager-amount").text());
+
+      $("#wager-amount").text(submitAmount + selectedAmt);
+      game.players[0].finalWager = submitAmount + selectedAmt;
+    })
+  })
 }
 
 function showAnswerOrWager(clueId) {
@@ -35,7 +67,6 @@ function showAnswerOrWager(clueId) {
 
   game.canClickClue = false;
   if (game.data[clueId] instanceof Wager) {
-
     showWager(clueId);
   } else {
     showAnswers(clueBox, clueId);
@@ -46,20 +77,16 @@ function showWager(clueId) {
   let posValues = [5, 10, 100, 1000];
   let negValues = [-5, -10, -100, -1000];
 
-  let clueContainer = document.querySelector(`.question`);
-
-  clueContainer.innerHTML = '';
-  clueContainer.append(createWagerArea(posValues, negValues));
+  let view = document.querySelector(`#view`);
+  
+  $(".question").hide();
+  view.append(createWagerArea(posValues, negValues));
 
   $("#wager-amount").on("click", () => {
-    clueContainer.innerHTML = '';
-    
     showAnswers(buildClueBox(clueId), clueId);
   });
 
-  
   [...document.querySelectorAll('.number')].forEach((wagerNum) => {
-    
     wagerNum.addEventListener('click', (e) => {
 
       const selectedAmt = parseInt(e.target.innerText);
@@ -70,6 +97,7 @@ function showWager(clueId) {
     })
   })
 }
+
 function buildClueBox(clueId) {
   let clueBox;
   let clue = game.data[clueId];
@@ -137,7 +165,8 @@ function getAllCluesByCategoryId(categoryId,clueId) {
 }
 
 function showAnswers(clueBox, clueId) {
-  let clue = $(`.clue[data-id="${clueId}"]`);
+  $(".wager").remove();
+  
   let answerContainer;
   let correctAnswer = game.data[clueId].answer;
   let answers = getAllCluesByCategoryId(game.data[clueId].categoryId, clueId);
@@ -158,19 +187,39 @@ function showAnswers(clueBox, clueId) {
   [...document.querySelectorAll('.answer')].forEach((elem) => {
     elem.addEventListener('click', (event) => {
   
-      $(".question").remove();
-      $("#game-board").show();
-      render(event)
+      if (game.round < 3) {
+        $(".question").remove();
+        $("#game-board").show();
+        render(event)
+      } else {
+        let playerGuess = event.target.innerText
+        let isCorrectGuess = game.checkAnswer(clueId, playerGuess);
+        game.updateFinalWager(isCorrectGuess);
+        if (game.finalContestants < 2) {
+          game.rotateCurrentPlayer();
+          game.finalContestants++;
+        } else {
+          $(".question").remove();
+          let resultList = game.determineWinner();
+
+          let resultsContainer = createElWithId('div', '#results')
+          resultList.forEach(player => { 
+            let tempEl = createElWithClass('span', '.results', `${player.name} $${player.finalWager}`);
+            resultsContainer.append(tempEl);
+          })
+          
+          $("#view").append(resultsContainer);
+        }
+      }
     })
   })
 }
 
 function updateBoard() {
-  if ($("#game-board")) $("#game-board").remove();
-
   $("#view").append(createBoard());
   $("#game-board").on("click", render);
 }
+
 function createBoard() {
   let tempGameBoard = createElWithId('main', '#game-board');
 
@@ -222,10 +271,6 @@ function updatePlayers(playerArea) {
     let user = createElWithClass('article', `.player-${i}`, playerCard);
     playerArea.append(user);
   });
-}
-
-function clearPlayerArea() {
-  $("#player-area").html("");
 }
 
 function createQuitButton() {

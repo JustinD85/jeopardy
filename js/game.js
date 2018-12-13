@@ -5,6 +5,7 @@ class Game {
     this.board = new Board();
     this.data = new DataManager();
     this.canClickClue = true;
+    this.finalContestants = 0;
   }
 
   update(clueId, playerGuess) {
@@ -27,6 +28,14 @@ class Game {
     return playerGuess === correctAnswer;
 
   }
+
+  updateFinalWager(shouldIncrement) {
+    if (shouldIncrement) {
+      this.players[0].finalWager += this.players[0].score;
+    } else {
+      this.players[0].finalWager -= this.players[0].score;
+    }
+  }
   
   updatePlayerScore(shouldIncrement, clueId) {
     if (shouldIncrement) {
@@ -42,7 +51,10 @@ class Game {
   }
 
   determineWinner() {
-
+    
+    return this.players.sort(function (a, b) {
+      return b.finalWager - a.finalWager;
+    })
   }
 
   updateRound() {
