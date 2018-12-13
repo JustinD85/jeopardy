@@ -108,8 +108,11 @@ function showWager(clueId) {
       const selectedAmt = parseInt(e.target.innerText);
       const submitAmount = parseInt($("#wager-amount").text());
       const desiredAMount = submitAmount + selectedAmt;
+      
       const currentMax = parseInt($('.wager-max').text());
-      if (desiredAMount < currentMax) {
+      if (desiredAMount < 0) {
+        game.dataManager.data[clueId].value = 5;
+      } else if (desiredAMount < currentMax) {
         $("#wager-amount").text(submitAmount + selectedAmt);
         game.dataManager.data[clueId].value = submitAmount + selectedAmt;
       } else {
