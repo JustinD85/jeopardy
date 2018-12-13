@@ -8,7 +8,7 @@ describe('Start game', function () {
 
   beforeEach(function () {
 
-   chai.spy.on(global.domMethods,['transitionToGame'], ()=> true)
+    chai.spy.on(global.domMethods, ['transitionToGame'], ()=> true)
   });
 
   it('should be able to transition from start screen to game', function () {

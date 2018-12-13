@@ -26,7 +26,7 @@ class Game {
     matchingClues = this.dataManager.randomizeArray(matchingClues);
 
     return matchingClues.splice(-3).map(clue => clue.answer);
-}
+  }
 
   checkAnswer(clueId, playerGuess) {
     const correctAnswer = this.dataManager.data[clueId].answer;
@@ -77,12 +77,12 @@ class Game {
     }
 
     switch (this.round) {
-      case 1: checkClueAvailability(0, 16);
-        break;
-      case 2: checkClueAvailability(0, 32);
-        break;
-      case 3: checkClueAvailability(0, 33, false);
-        break;
+    case 1: checkClueAvailability(0, 16);
+      break;
+    case 2: checkClueAvailability(0, 32);
+      break;
+    case 3: checkClueAvailability(0, 33, false);
+      break;
     }
   }
 }

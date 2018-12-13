@@ -148,7 +148,8 @@ function showAnswers(clueBox, clueId) {
   
   let answerContainer;
   let correctAnswer = game.dataManager.data[clueId].answer;
-  let answers = game.getAllCluesByCategoryId(game.dataManager.data[clueId].categoryId, clueId);
+  let categoryId = game.dataManager.data[clueId].categoryId;
+  let answers = game.getAllCluesByCategoryId(categoryId, clueId);
   answers.push(correctAnswer);
   answers = game.dataManager.randomizeArray(answers);
   answers = answers.map(answer => answer);
