@@ -104,6 +104,8 @@ class DataManager {
       newStr.shift();
 
       return newStr.join('');
+    } else {
+      return string;
     }
   }
 
