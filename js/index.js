@@ -254,6 +254,7 @@ function createBoard() {
     for (let j = 0; j < rowCount; j++) {
       let clueValue = '';
       if (game.dataManager.data[id].available) {
+        game.dataManager.data[id].value = game.dataManager.data[id].value * game.round;
         clueValue = `<h4> ${game.dataManager.data[id].value}</h4>`;
         row = createElWithClass('article', '.clue', '', clueValue);
         row.dataset.id = `${id}`;
