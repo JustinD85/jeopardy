@@ -27,7 +27,7 @@ Welcome to our three player recreation of the classic trivia game Jeopardy. Join
 
 ## Setup
 
-Clone down the repo [repo](git@github.com:JustinD85/jeopardy.git)
+Clone down the [repository here](git@github.com:JustinD85/jeopardy.git)
 
 Run ```npm install``` from the root directory
 
