@@ -23,6 +23,7 @@ Welcome to our three player recreation of the classic trivia game Jeopardy. Join
 * Add AI so that 1-3 players can player at a time
 * Add avatars for players to choose from
 * Include a time feature
+* Pull from a Jeopardy API
 
 
 ## Setup
@@ -31,6 +32,9 @@ Clone down the repository - `git clone git@github.com:JustinD85/jeopardy.git`
 
 From the root directory run `npm install` 
 
+# Contributors
+* Justin Duncan
+* Travis Gee
 
 ## Original Assignment
 
