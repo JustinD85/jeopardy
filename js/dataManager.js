@@ -77,7 +77,9 @@ class DataManager {
       if (clueIdForDOM > 31 && !dailyDoubles.includes(clueIdForDOM)) { 
         return acc; 
       }
-      if (clueIdForDOM > 15) clueOptions.pointValue *= 2;
+      if (clueIdForDOM > 15) {
+        clueOptions.pointValue *= 2;
+      }
       if (dailyDoubles.includes(clueIdForDOM)) {
         acc.push(new Wager(clueOptions))
       } else {

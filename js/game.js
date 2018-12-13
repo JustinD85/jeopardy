@@ -19,7 +19,9 @@ class Game {
   }
 
   getAllCluesByCategoryId(categoryId, clueId) {
-    let matchingClues = this.dataManager.sourceData.clues.filter((clue) => clue.categoryId === categoryId);
+    let matchingClues = this.dataManager.sourceData.clues.filter((clue) => {
+      clue.categoryId === categoryId
+    });
     let correctAnswer = this.dataManager.data[clueId].answer;
 
     matchingClues = matchingClues.filter(clue => clue.answer !== correctAnswer);
