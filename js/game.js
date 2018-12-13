@@ -1,5 +1,6 @@
 class Game {
   constructor(inPlayers) {
+    // Object.assign(this, {round, players, etc.})
     this.round = 1;
     this.players = inPlayers.map((name) => new Player(name));
     this.board = new Board();
@@ -11,6 +12,7 @@ class Game {
   update(clueId, playerGuess) {
     const isCorrect = this.checkAnswer(clueId, playerGuess);
     this.dataManager.data[clueId].available = false;
+    // dont need this vvv
     this.canClickClue = true;
     this.updatePlayerScore(isCorrect, clueId);
     this.rotateCurrentPlayer();

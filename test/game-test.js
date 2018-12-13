@@ -100,7 +100,7 @@ describe('Make a game', function () {
   it('Should be able to check answer', function () {
 
     let check = game.checkAnswer(0, 'Uncrustables rock');
-
+    // also check for when it's true
     expect(check).to.be.equal(false);
   });
 
@@ -143,13 +143,6 @@ describe('Make a game', function () {
     let winner = game.determineWinner();
 
     expect(winner[0].name).to.equal('Adam');
-
-    game.players[0].finalWager = 100;
-    game.players[1].finalWager = 1;
-    game.players[2].finalWager = 9999;
-    let kitty = game.determineWinner();
-
-    expect(kitty[0].name).to.equal('Cat');
   });
 
   it('Should be able to update round', function () {
@@ -161,11 +154,5 @@ describe('Make a game', function () {
     }
     game.updateRound();
     expect(game.round).to.equal(2);
-
-    for (let i = 0; i < 32; i++) {
-      game.dataManager.data[i].available = false;
-    }
-    game.updateRound();
-    expect(game.round).to.equal(3);
   });
 });
