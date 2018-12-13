@@ -2,15 +2,10 @@
 * {
   box-sizing: border-box;
   font-family: 'Amatic SC', cursive;
+  margin: 0;
+  padding: 0;
   font-weight: bolder;
-}
-#start-btn{
-  position: absolute;
-  border-radius: 5px;
-  height:75px;
-  width:100px;
-  bottom:10%;
-  right:10%;
+  font-size: 1.3rem;
 }
 
 body {
@@ -18,64 +13,183 @@ body {
   background: #0099e0;
 }
 
-
-.cloud-1{
-  position: absolute;
-  animation: 15s  infinite cloudsForward;
-  left:0px;
+#view {
+  height: 95%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
-.cloud-2{
+.question:nth-child(1),
+.question:nth-child(2){
+
+}
+.question-container{
+  
+}
+
+.wager-title{
+  margin-top:0;
+}
+.question-container,
+.wager-container{
+  box-shadow:
+  whitesmoke 0 0px 10px 1px inset,
+  whitesmoke 0 0px 10px 1px;
+  min-width: 50%;
+  margin:auto;
+  text-align: center;
+  color:whitesmoke;
+  background:#123652;
+  border-radius: 90px;
+  padding:10px;
+}
+.wager-max::before{
+  content:'Max:';
+}
+.ans-neg-box{
+  margin-bottom: 30px;
+}
+
+#wager-amount{
+  border-radius: 10px;
+  color:crimson;
+  width:50px;
+}
+.wager-min::before{
+  content: 'Min:';
+}
+
+
+.answer{
+  background:crimson;
+  /* height:3rem; */
+  padding:1rem;
+  margin:7px;
+  display: inline-block;
+  box-shadow:
+  whitesmoke 0 0px 10px 1px inset,
+  whitesmoke 0 0px 10px 1px;
+  /* border:whitesmoke solid 1px; */
+  text-align: center;
+  width:45%;
+}
+#quit {
+  border-radius: 50%;
+  padding: 30px;
   position: absolute;
-  animation: 25s  infinite cloudsReverse;
-  right:0px;
-  top:200px;
+  bottom: -15px;
+  right: -15px;
+  background: crimson;
+}
+
+#start-btn {
+  position: absolute;
+  color:crimson;
+  border-radius: 5px;
+  height: 75px;
+  width: 100px;
+  bottom: 10%;
+  right: 10%;
+  animation: infinite 1400ms breath;
+}
+
+#player-area {
+  width: 100%;
+  text-align: center;
+  margin: 20px auto 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+#current-player {
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow:
+    whitesmoke 0 0px 10px 1px inset,
+    whitesmoke 0 0px 10px 1px;
+}
+#current-player::before{
+  content:'↝'
+}
+#current-player::after{
+  content:'↜'
+}
+.cloud-1 {
+  position: absolute;
+  animation: 85s infinite cloudsForward;
+  top:0;
+  left: 0px;
+  z-index: -1;
+}
+
+.cloud-2 {
+  position: absolute;
+  animation: 55s infinite cloudsReverse;
+  right: 0px;
+  top: 200px;
   z-index: -2;
 }
 
-.cloud-3{
+.cloud-3 {
   position: absolute;
-  animation: 25s  infinite cloudsForward;
-  left:200px;
-  top:300px;
+  animation: 65s infinite cloudsForward;
+  left: 400px;
+  top: 300px;
+  z-index: -1;
 }
 
-@keyframes cloudsForward{
-  0%,100%{
-  }
-  50%{
-    left:calc(100vw);
-  }
-}
+@keyframes cloudsForward {
 
-@keyframes cloudsReverse{
-  0%,100%{
-  }
-  50%{
-    right:calc(100vw);
+  0%,
+  100% {}
+
+  50% {
+    left: calc(100vw);
   }
 }
 
-.birds{
+@keyframes cloudsReverse {
+
+  0%,
+  100% {}
+
+  50% {
+    right: calc(100vw);
+  }
+}
+
+.birds {
   position: absolute;
   z-index: -1;
-  animation:  3s infinite fly;
+  animation: 3s infinite fly;
 }
 
-@keyframes fly{
-  0%,100%{
-    left:40%;
-    top:30%;
+@keyframes fly {
+
+  0%,
+  100% {
+    left: 40%;
+    top: 30%;
   }
-  50%{
-    left:30%;
-    top:20%;
+
+  50% {
+    left: 30%;
+    top: 20%;
   }
 }
 
-#title {
+#title span {
   font-size: 4rem;
-  text-align: center;
+}
+
+#title span {
+  position: relative;
+  left: 100px;
+  color: crimson; 
+  margin:10px;
 }
 
 .profile-picture {
@@ -105,60 +219,69 @@ input {
   100% {
     color: lightblue;
   }
+
   50% {
+    height:1.95rem;
     color: purple;
   }
 }
 
-.hide {
-  size: 0;
-  height: 0;
-  width: 0;
-  visibility: hidden;
-}
 
+
+#loading-screen {
+  height: 100vh;
+  object-fit: cover;
+}
 
 /*CLUE BOXES*/
 #game-board {
-  height: 85%;
-  min-height: 500px;
-  /* border: 1px solid green; */
-  /* background-color: lightgrey; */
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-}
-
-.category {
-  height: 100%;
-  /* border: 1px solid whitesmoke; */
+  width: 80%;
+  margin: auto;
 }
 
 .clue {
-  height: 10%;
+  text-align: center;
+  line-height: -15px;
+  min-height: 3rem;
+  height: auto;
   border-radius: 5px;
-  padding:5% 2%;;
+  padding: 5% 2%;
+  margin: 9% 1%;
   background-color: #123652;
   border: 1px solid whitesmoke;
+  color: whitesmoke;
 }
 
-.wager section {
+.clue:nth-child(1) {
+  background: crimson;
+  line-height: -5px;
+  /* color:crimson; */
+  height: 4rem;
+}
+
+/* .wager section {
   display: flex;
   justify-content: space-around;
   margin: 2px;
-}
+} */
 
 .number {
-  background: lightgoldenrodyellow;
+  padding:10px;
+} 
+.results{
+  width: 50%;
+  display: block;
 }
-
-.player-area {
-  display: inline-block;
-  width: 100%;
-  text-align: center;
-  margin: 0 auto;
-  background: green;
+#wager-amount{
+  margin: 0 20px;
 }
-
-.player-0 {
-  color: white;
+#winner{
+  font-size:5rem;
+  color:crimson;
+  margin:  0 auto;
 }
+/* #winner::after{
+  content:' is the WINNER!!🥳'
+} */

@@ -30,7 +30,7 @@ class Game {
 
   checkAnswer(clueId, playerGuess) {
     const correctAnswer = this.dataManager.data[clueId].answer;
-    
+
     return playerGuess === correctAnswer;
 
   }
@@ -42,7 +42,7 @@ class Game {
       this.players[0].finalWager -= this.players[0].score;
     }
   }
-  
+
   updatePlayerScore(shouldIncrement, clueId) {
     if (shouldIncrement) {
       this.players[0].score += this.dataManager.data[clueId].value;
@@ -56,7 +56,7 @@ class Game {
   }
 
   determineWinner() {
-    
+
     return this.players.sort(function (a, b) {
       return b.finalWager - a.finalWager;
     })
