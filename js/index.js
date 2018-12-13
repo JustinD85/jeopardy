@@ -314,7 +314,7 @@ function transitionToGame() {
     createPlayerArea();
     updateBoard();
     createQuitButton();
-  }, 500);
+  }, 6500);
 }
 
 if (typeof module !== 'undefined') {
