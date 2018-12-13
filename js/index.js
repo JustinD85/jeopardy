@@ -69,7 +69,9 @@ function showFinalRound() {
       const submitAmount = parseInt($("#wager-amount").text());
       const desiredAMount = submitAmount + selectedAmt;
       const currentMax = parseInt($('.wager-max').text());
-      if (desiredAMount < currentMax) {
+      if ($("#wager-amount").text() < 5) {
+        game.players[0].finalWager = 5;
+      } else if (desiredAMount < currentMax) {
         $("#wager-amount").text(submitAmount + selectedAmt);
         game.players[0].finalWager = submitAmount + selectedAmt;
       } else {
